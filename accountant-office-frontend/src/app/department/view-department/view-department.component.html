@@ -1,5 +1,9 @@
-<h1>Department: {{ department?.name }}; Average salary: {{ department?.averageSalary }}</h1>
-
+<div class="head-info">
+  <p class="head-info-title">Department</p><p>{{ department?.name }}</p>
+</div>
+<div class="head-info">
+  <p class="head-info-title">Average salary</p><p>{{ department?.averageSalary }}</p>
+</div>
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
     <!-- Id Column -->
     <ng-container matColumnDef="id">

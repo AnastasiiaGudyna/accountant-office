@@ -1,4 +1,15 @@
-<h1>Accountant Office</h1>
-<mat-divider></mat-divider>
+<mat-toolbar>
+    <button mat-raised-button color="primary" aria-label="menu icon">
+        <mat-icon>menu</mat-icon>
+    </button>
+    <span class= "title">Accountant Office</span>
+    <mat-divider [vertical]="true"></mat-divider>
+    <a routerLink="departments" class="visible-link" routerLinkActive="active-link">Departments</a>
+    <a [routerLink]="['/departments', departmentId]" routerLinkActive="visible-link">Employees</a>
+    <span class="spacer"></span>
+    <button mat-raised-button color="primary" class="account-box-icon" aria-label="profile">
+        <mat-icon>account_box</mat-icon>
+    </button>
+</mat-toolbar>
 
 <router-outlet></router-outlet>

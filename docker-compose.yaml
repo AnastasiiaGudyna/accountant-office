@@ -21,4 +21,4 @@ services:
       context: ./accountant-office-frontend
       dockerfile: Dockerfile
     ports: 
-      - '8080:80'
+      - '80:80'

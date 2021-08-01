@@ -27,7 +27,7 @@ export class ViewDepartmentComponent implements OnInit {
     public dialog: MatDialog) { }
 
   public ngOnInit(): void {
-    this.route.paramMap.pipe().subscribe(params => {
+    this.route.paramMap.subscribe(params => {
       const id = params.get("id") ?? "";
       this.apiDepartment.getDepartment(id).subscribe(item => this.department = item);
       this.apiDepartment.getEmployeesOfDepartment(id, 0, this.pageSize).subscribe(items => this.dataSource = items);

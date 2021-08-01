@@ -11,6 +11,7 @@ namespace AccountantOffice.Data.DBContext
         public AccountantContext(DbContextOptions<AccountantContext> options)
             : base(options)
         {
+            Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -23,12 +24,6 @@ namespace AccountantOffice.Data.DBContext
             modelBuilder.Entity<Department>()
                 .Property(d => d.CreateDate)
                 .IsRequired();
-            modelBuilder.Entity<Department>()
-                .HasMany(d => d.Employees)
-                .WithOne(e => e.Department)
-                .HasForeignKey(e => e.DepartmentId);
-            modelBuilder.Entity<Department>()
-                .Ignore(d => d.AverageSalary).Ignore(d => d.EmployeesCount);
 
             modelBuilder.Entity<Employee>()
                 .HasKey(e => e.Id);
@@ -36,7 +31,6 @@ namespace AccountantOffice.Data.DBContext
                 .HasOne(e => e.Department)
                 .WithMany(d => d.Employees)
                 .HasForeignKey(e => e.DepartmentId);
-
         }
     }
 }

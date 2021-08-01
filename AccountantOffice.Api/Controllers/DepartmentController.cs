@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using AccountantOffice.Core.Entities;
 using AccountantOffice.UseCases.Cases;
+using AccountantOffice.UseCases.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -26,7 +27,7 @@ namespace AccountantOffice.Api.Controllers
         /// <param name="itemsOnPage">count of retrieving items</param>
         /// <returns>List of <see cref="Department"/></returns>
         [HttpGet("")]
-        public IEnumerable<Department> GetDepartments([FromQuery] uint page, [FromQuery] uint itemsOnPage)
+        public IEnumerable<DepartmentModel> GetDepartments([FromQuery] uint page, [FromQuery] uint itemsOnPage)
         {   
             return departmentCases.GetDepartments(page, itemsOnPage);
         }
@@ -37,7 +38,7 @@ namespace AccountantOffice.Api.Controllers
         /// <param name="id">Guid of department</param>
         /// <returns><see cref="Department"/></returns>
         [HttpGet("{id:guid}")]
-        public Department Get(Guid id)
+        public DepartmentModel Get(Guid id)
         {   
             return departmentCases.Get(id);
         }
@@ -48,7 +49,7 @@ namespace AccountantOffice.Api.Controllers
         /// <param name="item">new Department</param>
         /// <returns>id</returns>
         [HttpPut]
-        public Guid Put([FromBody] Department item)
+        public Guid Put([FromBody] CreateDepartmentModel item)
         {
             return departmentCases.Create(item);
         }
@@ -71,13 +72,13 @@ namespace AccountantOffice.Api.Controllers
         /// <param name="id">id of Department for deletion</param>
         /// <returns>id</returns>
         [HttpDelete("{id:guid}")]
-        public Guid Post([FromRoute] Guid id)
+        public Guid Delete([FromRoute] Guid id)
         {
             return departmentCases.Delete(id);
         }
 
         [HttpGet("{id:guid}/employees")]
-        public IEnumerable<Employee> GetEmployees([FromRoute] Guid id, uint page, uint itemsOnPage)
+        public IEnumerable<EmployeeModel> GetEmployees([FromRoute] Guid id, uint page, uint itemsOnPage)
         {
             return employeeCases.GetEmployees(id, page, itemsOnPage);
         }

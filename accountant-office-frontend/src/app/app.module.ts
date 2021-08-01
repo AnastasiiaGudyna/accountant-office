@@ -8,7 +8,10 @@ import { DepartmentModule } from './department/department.module';
 import { ApiInterceptor } from './interceptors/api.interceptor';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import {MatDividerModule} from '@angular/material/divider';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -21,6 +24,9 @@ import {MatDividerModule} from '@angular/material/divider';
     DepartmentModule,
     HttpClientModule,
     MatDividerModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
     FormsModule
   ],
   providers: [

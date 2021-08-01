@@ -6,6 +6,7 @@ using AccountantOffice.Data.DBContext;
 using AccountantOffice.Data.Repositories;
 using AccountantOffice.UseCases.Cases;
 using AccountantOffice.UseCases.Interfaces;
+using AccountantOffice.UseCases.Mapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -44,6 +45,7 @@ namespace AccountantOffice.Api
             services.AddTransient<EmployeeBusinessCases>();
             services.AddScoped<IRepository<Department>, Repository<Department>>();
             services.AddScoped<IRepository<Employee>, Repository<Employee>>();
+            services.AddAutoMapper(typeof(MapperProfile));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "AccountantOffice.Api", Version = "v1"});

@@ -3,50 +3,49 @@ using System.Collections.Generic;
 using System.Linq;
 using AccountantOffice.Core.Entities;
 using AccountantOffice.UseCases.Interfaces;
+using AccountantOffice.UseCases.Models;
+using AutoMapper;
 
 namespace AccountantOffice.UseCases.Cases
 {
     public class DepartmentBusinessCases
     {
-        private readonly IRepository<Department> _repo;
-        public DepartmentBusinessCases(IRepository<Department> repo)
+        private readonly IRepository<Department> repo;
+        private readonly IMapper mapper;
+
+        public DepartmentBusinessCases(IRepository<Department> repo, IMapper mapper)
         {
-            _repo = repo;
+            this.repo = repo;
+            this.mapper = mapper;
         }
 
-        public IEnumerable<Department> GetDepartments(uint page, uint items)
+        public IEnumerable<DepartmentModel> GetDepartments(uint page, uint items)
         {
-            return _repo
-                .GetList(page, items)
-                .Select(x => new Department
-                {
-                    AverageSalary = x.Employees.Any() ? x.Employees.Average(e => e.Salary) : 0,
-                    EmployeesCount = x.Employees.Count(),
-                    Name = x.Name,
-                    Id = x.Id
-                })
-                .ToList();
+            var departments = repo
+                .GetList(page, items);
+            return mapper.ProjectTo<DepartmentModel>(departments).ToList();
         }
 
-        public Department Get(Guid id)
+        public DepartmentModel Get(Guid id)
         {
-            return _repo.GetItemById(id);
+            return mapper.Map<DepartmentModel>(repo.GetItemById(id));
         }
 
-        public Guid Create(Department item)
+        public Guid Create(CreateDepartmentModel item)
         {
-            return _repo.CreateItem(item);
+            var createDepartmentEntity = mapper.Map<Department>(item);
+            return repo.CreateItem(createDepartmentEntity);
         }
 
         public Guid Update(Department item)
         {
-            return _repo.UpdateItem(item);
+            return repo.UpdateItem(item);
         }
 
         public Guid Delete(Guid id)
         {
-            var item = _repo.GetItemById(id);
-            return _repo.DeleteItem(item);
+            var item = repo.GetItemById(id);
+            return repo.DeleteItem(item);
         }
     }
 }

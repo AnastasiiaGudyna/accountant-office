@@ -1,0 +1,42 @@
+.spacer{
+    flex: 1 1 auto;
+}
+mat-divider {
+    height: 100%;
+    border: 1px;
+    border-color: #673ab7;
+    margin-right: 15px;
+}
+
+.title {
+    padding: 0 15px;
+}
+.mat-raised-button {
+    height: 100%;
+}
+.mat-toolbar {
+    padding: 0;
+}
+
+a {
+    visibility: hidden;
+    padding: 0 15px 0 0;
+    text-decoration: none;
+    &.visible-link {
+        visibility: visible;
+    }
+    &:not(:first-of-type) {
+        &::before {
+            content: ">";
+            padding-right: 15px;
+            cursor: default;
+            outline: none;
+            text-decoration: none;
+            &:hover {
+                outline: none;
+                text-decoration: none;
+                color: unset;
+            }
+        }
+    }
+}
