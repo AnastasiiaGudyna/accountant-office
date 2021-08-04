@@ -16,6 +16,11 @@ namespace AccountantOffice.Data.Repositories
             this.context = context;
         }
         
+        public IQueryable<T> GetList()
+        {
+            return context.Set<T>();
+        }
+        
         public IQueryable<T> GetList(uint page, uint items)
         {
             return context.Set<T>().Skip((int) (page*items)).Take((int) items);

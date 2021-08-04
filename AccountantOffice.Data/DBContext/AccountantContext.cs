@@ -7,11 +7,11 @@ namespace AccountantOffice.Data.DBContext
     {
         public DbSet<Department> Departments { get; set; }
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<JobCategory> JobCategories { get; set; }
         
         public AccountantContext(DbContextOptions<AccountantContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -31,6 +31,15 @@ namespace AccountantOffice.Data.DBContext
                 .HasOne(e => e.Department)
                 .WithMany(d => d.Employees)
                 .HasForeignKey(e => e.DepartmentId);
+            modelBuilder.Entity<Employee>()
+                .HasMany(e => e.JobCategories)
+                .WithMany(c => c.Employees);
+
+            modelBuilder.Entity<JobCategory>()
+                .HasKey(c => c.Id);
+            modelBuilder.Entity<JobCategory>()
+                .Property(c => c.Name)
+                .IsRequired();
         }
     }
 }

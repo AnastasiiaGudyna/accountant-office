@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {  Router } from '@angular/router';
-import { ApiDepartmentService } from '../services/api-department.service';
+import { ApiDepartmentService } from '../../services/api-department.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NewDepartmentComponent } from '../new-department/new-department.component';
-import { Department } from '../models/department.model';
+import { Department } from '../../models/department.model';
 import { PageEvent } from '@angular/material/paginator';
 
 @Component({

@@ -10,6 +10,7 @@ import { filter } from 'rxjs/operators';
 export class AppComponent implements OnInit{
   public title = 'accountant-office-front';
   public departmentId = "";
+  public section = "";
 
   public constructor(private router: Router) {
     router.events.pipe(
@@ -17,7 +18,7 @@ export class AppComponent implements OnInit{
     ).subscribe(params => {
       const nav = params as NavigationStart;
       const arr = nav.url.split("/");
-      debugger
+      this.section = arr[1];
       this.departmentId = (arr.length === 3 && arr[1] === "departments") ? arr[2] : ""
     });
   }

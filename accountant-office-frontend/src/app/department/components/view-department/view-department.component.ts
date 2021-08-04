@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Department } from '../models/department.model';
-import { Employee } from '../models/employee.model';
-import { ApiDepartmentService } from '../services/api-department.service';
-import { ApiEmployeeService } from '../services/api-employee.service';
+import { Department } from '../../models/department.model';
+import { Employee } from '../../models/employee.model';
+import { ApiDepartmentService } from '../../services/api-department.service';
+import { ApiEmployeeService } from '../../services/api-employee.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NewEmployeeComponent } from '../new-employee/new-employee.component';
 import { PageEvent } from '@angular/material/paginator';

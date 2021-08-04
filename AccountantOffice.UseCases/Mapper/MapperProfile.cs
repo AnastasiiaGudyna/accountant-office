@@ -17,6 +17,7 @@ namespace AccountantOffice.UseCases.Mapper
                 .ForMember(d => d.EmployeesCount, m => m.MapFrom(
                     s => s.Employees.Count()));
             CreateMap<CreateDepartmentModel, Department>();
+            CreateMap<JobCategory, JobCategoryModel>();
         }
     }
 }

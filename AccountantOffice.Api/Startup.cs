@@ -43,8 +43,10 @@ namespace AccountantOffice.Api
                 .UseSqlServer("name=ConnectionStrings:AccountantConnectionString"));
             services.AddTransient<DepartmentBusinessCases>();
             services.AddTransient<EmployeeBusinessCases>();
+            services.AddTransient<CatalogBusinessCases>();
             services.AddScoped<IRepository<Department>, Repository<Department>>();
             services.AddScoped<IRepository<Employee>, Repository<Employee>>();
+            services.AddScoped<IRepository<JobCategory>, Repository<JobCategory>>();
             services.AddAutoMapper(typeof(MapperProfile));
             services.AddSwaggerGen(c =>
             {

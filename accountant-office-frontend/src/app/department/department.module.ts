@@ -1,8 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DepartmentsComponent } from './departments/departments.component';
-import { NewDepartmentComponent } from './new-department/new-department.component';
-import { ViewDepartmentComponent } from './view-department/view-department.component';
+import {
+  DepartmentsComponent,
+  CatalogsComponent,
+  NewDepartmentComponent,
+  ViewDepartmentComponent,
+  NewEmployeeComponent
+} from './components';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -11,15 +15,17 @@ import { ApiDepartmentService } from './services/api-department.service';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
-import { NewEmployeeComponent } from './new-employee/new-employee.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTabsModule } from '@angular/material/tabs';
+import { ApiCatalogService } from './services/api-catalog.service';
 
 @NgModule({
   declarations: [
     DepartmentsComponent,
     NewDepartmentComponent,
     ViewDepartmentComponent,
-    NewEmployeeComponent
+    NewEmployeeComponent,
+    CatalogsComponent
   ],
   imports: [
     CommonModule,
@@ -30,10 +36,12 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatDialogModule,
     MatInputModule,
     MatPaginatorModule,
+    MatTabsModule,
     FormsModule
   ],
   providers: [
-    ApiDepartmentService
+    ApiDepartmentService,
+    ApiCatalogService
   ]
 })
 export class DepartmentModule { }
