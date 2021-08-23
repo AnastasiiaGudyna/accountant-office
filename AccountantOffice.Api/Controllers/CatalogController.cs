@@ -39,7 +39,7 @@ namespace AccountantOffice.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPut("job-categories")]
-        public Guid CreateJobCategory([FromBody] JobCategory category)
+        public Guid CreateJobCategory([FromBody] CreateJobCategoryModel category)
         {
             return cases.Create(category);
         }
@@ -48,10 +48,20 @@ namespace AccountantOffice.Api.Controllers
         /// Deletes job category
         /// </summary>
         /// <returns></returns>
-        [HttpDelete("job-categories/{id}")]
+        [HttpDelete("job-categories/{id:guid}")]
         public Guid GetJobCategories(Guid id)
         {
             return cases.Delete(id);
+        }
+
+        /// <summary>
+        /// Retrieves list skills
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("skills")]
+        public IEnumerable<string> GetSkills()
+        {
+            return new List<string>{"DB", "Java", "JavaScript"};
         }
     }
 }

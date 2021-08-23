@@ -9,11 +9,11 @@ namespace AccountantOffice.Api.Controllers
     [Route("employees")]
     public class EmployeeController : ControllerBase
     {
-        private readonly EmployeeBusinessCases _cases;
+        private readonly EmployeeBusinessCases cases;
 
         public EmployeeController(EmployeeBusinessCases cases)
         {
-            _cases = cases;
+            this.cases = cases;
         }
         /// <summary>
         /// Get Employees
@@ -21,10 +21,10 @@ namespace AccountantOffice.Api.Controllers
         /// <param name="page">number of retrieving page</param>
         /// <param name="itemsOnPage">count of retrieving items</param>
         /// <returns>List of <see cref="Employee"/></returns>
-        [HttpGet("")]
+        [HttpGet]
         public IEnumerable<Employee> GetEmployees([FromQuery] uint page, [FromQuery] uint itemsOnPage)
         {   
-            return _cases.GetEmployees(page, itemsOnPage);
+            return cases.GetEmployees(page, itemsOnPage);
         }
         
         /// <summary>
@@ -32,43 +32,44 @@ namespace AccountantOffice.Api.Controllers
         /// </summary>
         /// <param name="id">Guid of Employee</param>
         /// <returns><see cref="Employee"/></returns>
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
         public Employee Get(Guid id)
         {   
-            return _cases.Get(id);
+            return cases.Get(id);
         }
         
         /// <summary>
         /// Create new Employee
         /// </summary>
         /// <param name="item">new Employee</param>
-        /// <returns>id</returns>
-        [HttpPut("")]
+        /// <returns>Employee id</returns>
+        [HttpPut]
         public Guid Put([FromBody] Employee item)
         {
-            return _cases.Create(item);
+            return cases.Create(item);
         }
-        
+
         /// <summary>
         /// Update Employee
         /// </summary>
         /// <param name="item">Employee for update</param>
-        /// <returns>id</returns>
-        [HttpPost("{id}")]
+        /// <param name="id"></param>
+        /// <returns>Employee id</returns>
+        [HttpPost("{id:guid}")]
         public Guid Post([FromBody] Employee item, [FromRoute] Guid id)
         {
-            return _cases.Update(item);
+            return cases.Update(item);
         }
         
         /// <summary>
         /// Delete Employee
         /// </summary>
         /// <param name="id">id of Employee for deletion</param>
-        /// <returns>id</returns>
-        [HttpDelete("{id}")]
+        /// <returns>Employee id</returns>
+        [HttpDelete("{id:guid}")]
         public Guid Post([FromRoute] Guid id)
         {
-            return _cases.Delete(id);
+            return cases.Delete(id);
         }
     }
 }

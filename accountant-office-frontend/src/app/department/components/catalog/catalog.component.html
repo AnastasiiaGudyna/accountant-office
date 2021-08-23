@@ -1,0 +1,24 @@
+<div *ngFor='let item of catalogArray'>
+    <div *ngIf='!item.new'>
+        <mat-form-field class='catalog-field' appearance="fill">
+            <mat-label>Job Title</mat-label>
+            <input matInput type="text" readonly [(ngModel)]="item.name">
+        </mat-form-field>
+        <button mat-icon-button (click)="delete(item.id)">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div *ngIf='item.new'>
+        <mat-form-field class='catalog-field' appearance="fill">
+            <mat-label>New Job Title</mat-label>
+            <input matInput type="text" [(ngModel)]="item.name">
+        </mat-form-field>
+        <button mat-icon-button (click)="save(item)">
+            <mat-icon>check_circle</mat-icon>
+        </button>
+    </div>
+</div>
+<div>
+    <p class='catalog-field'></p>
+    <button mat-raised-button color="accent" (click)="addNew()">Add New</button>
+</div>

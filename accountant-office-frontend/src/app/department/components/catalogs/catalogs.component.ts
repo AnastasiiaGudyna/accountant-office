@@ -1,38 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { ApiCatalogService } from '../../services/api-catalog.service';
+import { Component } from '@angular/core';
+import { Catalog } from '../../services/api-catalog.service';
 
 @Component({
   selector: 'app-catalogs',
   templateUrl: './catalogs.component.html',
   styleUrls: ['./catalogs.component.less']
 })
-export class CatalogsComponent implements OnInit {
 
-  public jobCategories: Array<any> = [];
-  constructor(private service: ApiCatalogService) { }
+export class CatalogsComponent {
 
-  ngOnInit(): void {
-    this.getJobs();
-  }
-  public addNewItem(): void {
-    this.jobCategories.push({new: true});
-  }
+  public catalogEnum: typeof Catalog = Catalog;
 
-  public save(item: any): void {
-    this.service.put(item)
-    .subscribe(result => {
-      item.new = false;
-    });
-  }
-
-  public delete(id: string): void {
-    this.service.delete(id)
-    .subscribe(() => {
-      this.jobCategories = this.jobCategories.filter(c => c.id !== id);
-    });
-  }
-
-  private getJobs(): void {
-    this.service.getJobCategories().subscribe(items => this.jobCategories = items);
-  }
 }

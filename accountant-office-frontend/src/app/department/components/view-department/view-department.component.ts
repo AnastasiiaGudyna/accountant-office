@@ -62,7 +62,7 @@ export class ViewDepartmentComponent implements OnInit {
 
   private openDialog(action: (res: any) => any, data: any = {}): void {
     const dialogRef = this.dialog.open(NewEmployeeComponent, {
-      width: '300px',
+      width: '600px',
       data: data
     });
 

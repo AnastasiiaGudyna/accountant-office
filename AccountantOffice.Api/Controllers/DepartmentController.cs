@@ -1,11 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using AccountantOffice.Core.Entities;
 using AccountantOffice.UseCases.Cases;
 using AccountantOffice.UseCases.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace AccountantOffice.Api.Controllers
 {
@@ -26,7 +24,7 @@ namespace AccountantOffice.Api.Controllers
         /// <param name="page">number of retrieving page</param>
         /// <param name="itemsOnPage">count of retrieving items</param>
         /// <returns>List of <see cref="Department"/></returns>
-        [HttpGet("")]
+        [HttpGet]
         public IEnumerable<DepartmentModel> GetDepartments([FromQuery] uint page, [FromQuery] uint itemsOnPage)
         {   
             return departmentCases.GetDepartments(page, itemsOnPage);
@@ -77,6 +75,13 @@ namespace AccountantOffice.Api.Controllers
             return departmentCases.Delete(id);
         }
 
+        /// <summary>
+        /// Retrieves List of employees in given department
+        /// </summary>
+        /// <param name="id">Department Id</param>
+        /// <param name="page">Page number</param>
+        /// <param name="itemsOnPage">Items on page</param>
+        /// <returns>List of Employees. For more information see <see cref="IEnumerable{EmployeeModel}"/>></returns>
         [HttpGet("{id:guid}/employees")]
         public IEnumerable<EmployeeModel> GetEmployees([FromRoute] Guid id, uint page, uint itemsOnPage)
         {

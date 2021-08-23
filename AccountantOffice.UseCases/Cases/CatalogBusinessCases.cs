@@ -24,9 +24,9 @@ namespace AccountantOffice.UseCases.Cases
             return mapper.ProjectTo<JobCategoryModel>(repo.GetList()).ToList();
         }
 
-        public Guid Create(JobCategory item)
+        public Guid Create(CreateJobCategoryModel item)
         {
-            return repo.CreateItem(item);
+            return repo.CreateItem(mapper.Map<JobCategory>(item));
         }
 
         public Guid Delete(Guid id)

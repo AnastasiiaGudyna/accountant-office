@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+export enum Catalog {
+  JobCategory = 'job-categories',
+  Skill = 'skills'
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -10,15 +13,15 @@ export class ApiCatalogService {
 
   constructor(private http: HttpClient) { }
 
-  public getJobCategories(): Observable<Array<any>> {
-    return this.http.get<Array<any>>(`${this.path}/job-categories`);
+  public get(catalog: Catalog): Observable<Array<any>> {
+    return this.http.get<Array<any>>(`${this.path}/${catalog}`);
   }
 
-  public put(item: any) {
-    return this.http.put<any>(`${this.path}/job-categories`, item);
+  public put(catalog: Catalog, item: any) {
+    return this.http.put<any>(`${this.path}/${catalog}`, item);
   }
 
-  public delete(id: string) {
-    return this.http.delete<any>(`${this.path}/job-categories/${id}`);
+  public delete(catalog: Catalog, id: string) {
+    return this.http.delete<any>(`${this.path}/${catalog}/${id}`);
   }
 }

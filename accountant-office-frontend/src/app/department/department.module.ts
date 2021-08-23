@@ -18,6 +18,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ApiCatalogService } from './services/api-catalog.service';
+import { CatalogComponent } from './components/catalog/catalog.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,8 @@ import { ApiCatalogService } from './services/api-catalog.service';
     NewDepartmentComponent,
     ViewDepartmentComponent,
     NewEmployeeComponent,
-    CatalogsComponent
+    CatalogsComponent,
+    CatalogComponent
   ],
   imports: [
     CommonModule,
@@ -37,6 +40,7 @@ import { ApiCatalogService } from './services/api-catalog.service';
     MatInputModule,
     MatPaginatorModule,
     MatTabsModule,
+    MatCheckboxModule,
     FormsModule
   ],
   providers: [
