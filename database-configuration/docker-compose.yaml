@@ -1,0 +1,25 @@
+version: "3.9"
+services:
+  postgres:
+    container_name: postgres
+    image: "postgres"
+    environment:
+      POSTGRES_USER: dbuser
+      POSTGRES_PASSWORD: R401spC
+      POSTGRES_DB: AccountantDB
+    ports:
+      - 5432:5432
+
+  flyway:
+    container_name: my-flyway
+    environment:
+      - FLYWAY_USER=dbuser
+      - FLYWAY_PASSWORD=R401spC
+      - FLYWAY_URL=jdbc:postgresql://postgres:5432/AccountantDB
+      - FLYWAY_GROUP=false
+    image: flyway/flyway:latest
+    command: -locations=filesystem:/flyway/sql -connectRetries=60 migrate
+    volumes:
+      - $PWD/sql:/flyway/sql
+    depends_on:
+      - postgres
