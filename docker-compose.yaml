@@ -1,20 +1,35 @@
 version: "3.9"
 services:
+  db:
+    container_name: sql.db
+    image: "postgres"
+    environment:
+      POSTGRES_USER: dbuser
+      POSTGRES_PASSWORD: R401spC
+      POSTGRES_DB: AccountantDB
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+  
+  migrations:
+    container_name: migrations
+    image: "flyway/flyway:7.14.0"
+    depends_on:
+      - db
+
   dotnet.api:
     container_name: dotnet.api
     build:
-      context: .
+      context: ./accountant-office-backend
       dockerfile: ./AccountantOffice.Api/Dockerfile
-    depends_on: 
-      - db
-  db:
-    container_name: mssql.db
-    image: "mcr.microsoft.com/mssql/server"
-    environment:
-        SA_PASSWORD: "&R401!spC"
-        ACCEPT_EULA: "Y"
     ports:
-      - "1444:1433"
+      - '5011:80'
+    depends_on:
+      - migrations
+
   front:
     container_name: front
     build: 

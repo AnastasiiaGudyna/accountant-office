@@ -38,7 +38,7 @@ namespace AccountantOffice.Data.Repositories
 
         public Guid CreateItem(T item)
         {
-            item.CreateDate = DateTimeOffset.UtcNow;
+            item.CreateDate = DateTime.UtcNow;
             var entry = context.Add(item);
             context.SaveChanges();
             return entry.Entity.Id;

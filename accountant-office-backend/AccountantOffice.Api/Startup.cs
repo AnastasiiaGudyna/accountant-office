@@ -40,7 +40,8 @@ namespace AccountantOffice.Api
             services.AddControllers();
             services.AddDbContext<AccountantContext>(opt => opt
                 .UseLazyLoadingProxies()
-                .UseSqlServer("name=ConnectionStrings:AccountantConnectionString"));
+                .UseNpgsql("name=ConnectionStrings:AccountantConnectionString")
+            );
             services.AddTransient<DepartmentBusinessCases>();
             services.AddTransient<EmployeeBusinessCases>();
             services.AddTransient<CatalogBusinessCases>();
@@ -63,11 +64,10 @@ namespace AccountantOffice.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AccountantOffice.Api v1"));
+                
             }
-
-            app.UseHttpsRedirection();
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AccountantOffice.Api v1"));
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });

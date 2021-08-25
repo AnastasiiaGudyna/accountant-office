@@ -1,5 +1,3 @@
-using System;
-
 namespace AccountantOffice.UseCases.Models
 {
     public class CreateJobCategoryModel

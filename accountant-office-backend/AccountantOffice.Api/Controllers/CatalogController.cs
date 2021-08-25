@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using AccountantOffice.Core.Entities;
 using AccountantOffice.UseCases.Cases;
 using AccountantOffice.UseCases.Models;
 using Microsoft.AspNetCore.Mvc;

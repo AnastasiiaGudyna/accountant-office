@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  baseUrl: "dotnet.api"
+  baseUrl: "http://localhost:5011/"
 };
