@@ -21,14 +21,14 @@ namespace AccountantOffice.Data.Repositories
             return context.Set<T>();
         }
         
-        public IQueryable<T> GetList(uint page, uint items)
+        public IQueryable<T> GetList(int page, int items)
         {
-            return context.Set<T>().Skip((int) (page*items)).Take((int) items);
+            return context.Set<T>().Skip(page*items).Take(items);
         }
 
-        public IQueryable<T> GetList(Expression<Func<T, bool>> condition, uint page, uint items)
+        public IQueryable<T> GetList(Expression<Func<T, bool>> condition, int page, int items)
         {
-            return context.Set<T>().Where(condition).Skip((int) (page*items)).Take((int) items);
+            return context.Set<T>().Where(condition).Skip(page*items).Take(items);
         }
 
         public T GetItemById(Guid id)

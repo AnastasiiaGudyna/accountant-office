@@ -14,7 +14,7 @@ import { PageEvent } from '@angular/material/paginator';
 export class DepartmentsComponent implements OnInit {
 
   public dataSource: Array<any> = [];
-  displayedColumns: string[] = ['id', 'name', 'avr_salary', 'employees_count', 'actions'];
+  displayedColumns: string[] = ['name', 'avr_salary', 'employees_count', 'actions'];
   public length = 100;
   public pageSize = 10;
   public pageSizeOptions: number[] = [5, 10, 25, 100];
@@ -25,7 +25,9 @@ export class DepartmentsComponent implements OnInit {
     public dialog: MatDialog) { }
 
   public ngOnInit(): void {
-    this.api.getDepartments(0, this.pageSize).subscribe(deps => this.dataSource = deps);
+    this.api.getDepartments(0, this.pageSize).subscribe(deps => {
+      this.dataSource = deps.departments; this.length = deps.departmentsCount;
+    });
   }
 
   public goToDepartment(id: string): void {

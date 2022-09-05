@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using AccountantOffice.Core.Entities;
 using AccountantOffice.UseCases.Cases;
+using AccountantOffice.UseCases.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccountantOffice.Api.Controllers
@@ -9,9 +10,9 @@ namespace AccountantOffice.Api.Controllers
     [Route("employees")]
     public class EmployeeController : ControllerBase
     {
-        private readonly EmployeeBusinessCases cases;
+        private readonly IEmployeeBusinessCases cases;
 
-        public EmployeeController(EmployeeBusinessCases cases)
+        public EmployeeController(IEmployeeBusinessCases cases)
         {
             this.cases = cases;
         }
@@ -22,7 +23,7 @@ namespace AccountantOffice.Api.Controllers
         /// <param name="itemsOnPage">count of retrieving items</param>
         /// <returns>List of <see cref="Employee"/></returns>
         [HttpGet]
-        public IEnumerable<Employee> GetEmployees([FromQuery] uint page, [FromQuery] uint itemsOnPage)
+        public IEnumerable<Employee> GetEmployees([FromQuery] int page, [FromQuery] int itemsOnPage)
         {   
             return cases.GetEmployees(page, itemsOnPage);
         }

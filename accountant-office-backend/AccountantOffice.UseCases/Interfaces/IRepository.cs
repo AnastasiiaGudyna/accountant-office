@@ -9,8 +9,8 @@ namespace AccountantOffice.UseCases.Interfaces
         where T : Entity
     {
         IQueryable<T> GetList();
-        IQueryable<T> GetList(uint page, uint items);
-        IQueryable<T> GetList(Expression<Func<T, bool>> condition, uint page, uint items);
+        IQueryable<T> GetList(int page, int items);
+        IQueryable<T> GetList(Expression<Func<T, bool>> condition, int page, int items);
         T GetItemById(Guid id);
         Guid CreateItem(T item);
         Guid UpdateItem(T item);

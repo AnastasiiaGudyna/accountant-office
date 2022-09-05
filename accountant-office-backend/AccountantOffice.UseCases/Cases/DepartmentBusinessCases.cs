@@ -8,7 +8,7 @@ using AutoMapper;
 
 namespace AccountantOffice.UseCases.Cases
 {
-    public class DepartmentBusinessCases
+    public class DepartmentBusinessCases : IDepartmentBusinessCases
     {
         private readonly IRepository<Department> repo;
         private readonly IMapper mapper;
@@ -19,7 +19,7 @@ namespace AccountantOffice.UseCases.Cases
             this.mapper = mapper;
         }
 
-        public IEnumerable<DepartmentModel> GetDepartments(uint page, uint items)
+        public IEnumerable<DepartmentModel> GetDepartments(int page, int items)
         {
             var departments = repo
                 .GetList(page, items);
@@ -46,6 +46,11 @@ namespace AccountantOffice.UseCases.Cases
         {
             var item = repo.GetItemById(id);
             return repo.DeleteItem(item);
+        }
+
+        public int GetDepartmentsCount()
+        {
+            return repo.GetList().Count();
         }
     }
 }

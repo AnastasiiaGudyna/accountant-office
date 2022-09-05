@@ -1,19 +1,29 @@
 using System;
 using System.Collections.Generic;
+using AccountantOffice.Api.Models;
 using AccountantOffice.Core.Entities;
 using AccountantOffice.UseCases.Cases;
+using AccountantOffice.UseCases.Interfaces;
 using AccountantOffice.UseCases.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccountantOffice.Api.Controllers
 {
+    /// <summary>
+    /// Work with departments
+    /// </summary>
     [Route("departments")]
     public class DepartmentController : ControllerBase
     {
-        private readonly DepartmentBusinessCases departmentCases;
-        private readonly EmployeeBusinessCases employeeCases;
+        private readonly IDepartmentBusinessCases departmentCases;
+        private readonly IEmployeeBusinessCases employeeCases;
 
-        public DepartmentController(DepartmentBusinessCases departmentCases, EmployeeBusinessCases employeeCases)
+        /// <summary>
+        /// Department controller constructor
+        /// </summary>
+        /// <param name="departmentCases"></param>
+        /// <param name="employeeCases"></param>
+        public DepartmentController(IDepartmentBusinessCases departmentCases, IEmployeeBusinessCases employeeCases)
         {
             this.departmentCases = departmentCases;
             this.employeeCases = employeeCases;
@@ -25,9 +35,14 @@ namespace AccountantOffice.Api.Controllers
         /// <param name="itemsOnPage">count of retrieving items</param>
         /// <returns>List of <see cref="Department"/></returns>
         [HttpGet]
-        public IEnumerable<DepartmentModel> GetDepartments([FromQuery] uint page, [FromQuery] uint itemsOnPage)
-        {   
-            return departmentCases.GetDepartments(page, itemsOnPage);
+        public DepartmentsStructure GetDepartments([FromQuery] int page, [FromQuery] int itemsOnPage)
+        {
+            var departs = new DepartmentsStructure
+            {
+                Departments = departmentCases.GetDepartments(page, itemsOnPage),
+                DepartmentsCount = departmentCases.GetDepartmentsCount()
+            };
+            return departs;
         }
         
         /// <summary>
@@ -83,7 +98,7 @@ namespace AccountantOffice.Api.Controllers
         /// <param name="itemsOnPage">Items on page</param>
         /// <returns>List of Employees. For more information see <see cref="IEnumerable{EmployeeModel}"/>></returns>
         [HttpGet("{id:guid}/employees")]
-        public IEnumerable<EmployeeModel> GetEmployees([FromRoute] Guid id, uint page, uint itemsOnPage)
+        public IEnumerable<EmployeeModel> GetEmployees([FromRoute] Guid id, int page, int itemsOnPage)
         {
             return employeeCases.GetEmployees(id, page, itemsOnPage);
         }

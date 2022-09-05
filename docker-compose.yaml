@@ -7,6 +7,8 @@ services:
       POSTGRES_USER: dbuser
       POSTGRES_PASSWORD: R401spC
       POSTGRES_DB: AccountantDB
+    ports:
+     - 5432:5432
 
   adminer:
     image: adminer
@@ -14,9 +16,17 @@ services:
     ports:
       - 8080:8080
   
-  migrations:
-    container_name: migrations
-    image: "flyway/flyway:7.14.0"
+  flyway:
+    container_name: flyway
+    environment:
+      - FLYWAY_USER=dbuser
+      - FLYWAY_PASSWORD=R401spC
+      - FLYWAY_URL=jdbc:postgresql://db/AccountantDB
+      - FLYWAY_GROUP=false
+    image: flyway/flyway:latest
+    command: -locations=filesystem:/flyway/sql -connectRetries=60 migrate
+    volumes:
+      - ./database-configuration/sql:/flyway/sql
     depends_on:
       - db
 
@@ -26,9 +36,11 @@ services:
       context: ./accountant-office-backend
       dockerfile: ./AccountantOffice.Api/Dockerfile
     ports:
-      - '5011:80'
+      - 5011:80
+    environment:
+      - ConnectionStrings__AccountantConnectionString=Server=db;Port=5432;Database=AccountantDB;User Id=dbuser;Password=R401spC;
     depends_on:
-      - migrations
+      - flyway
 
   front:
     container_name: front
@@ -36,4 +48,4 @@ services:
       context: ./accountant-office-frontend
       dockerfile: Dockerfile
     ports: 
-      - '80:80'
+      - 80:80

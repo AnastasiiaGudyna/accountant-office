@@ -10,8 +10,8 @@ export class ApiDepartmentService {
 
   constructor(private http: HttpClient) { }
 
-  public getDepartments(page: number, itemsOnPage: number): Observable<Array<any>> {
-    return this.http.get<Array<any>>(this.departmentPath, { params: { page, itemsOnPage } });
+  public getDepartments(page: number, itemsOnPage: number): Observable<any> {
+    return this.http.get<any>(this.departmentPath, { params: { page, itemsOnPage } });
   }
 
   public getDepartment(id: string): Observable<any> {

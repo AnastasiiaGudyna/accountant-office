@@ -16,7 +16,7 @@ import { PageEvent } from '@angular/material/paginator';
 export class ViewDepartmentComponent implements OnInit {
   public department: Department | undefined;
   public dataSource: Array<any> = [];
-  public displayedColumns: string[] = ['id', 'name', 'surname', 'salary', 'actions'];
+  public displayedColumns: string[] = ['name', 'surname', 'salary', 'actions'];
   public length = 100;
   public pageSize = 10;
   public pageSizeOptions: number[] = [5, 10, 25, 100];
@@ -29,7 +29,10 @@ export class ViewDepartmentComponent implements OnInit {
   public ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       const id = params.get("id") ?? "";
-      this.apiDepartment.getDepartment(id).subscribe(item => this.department = item);
+      this.apiDepartment.getDepartment(id).subscribe(item => {
+        this.department = item;
+        this.length = item.employeesCount;
+      });
       this.apiDepartment.getEmployeesOfDepartment(id, 0, this.pageSize).subscribe(items => this.dataSource = items);
     });
   }

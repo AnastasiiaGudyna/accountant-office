@@ -1,13 +1,9 @@
 <mat-toolbar>
-    <button mat-raised-button color="primary" [matMenuTriggerFor]="menu" aria-label="menu icon">
+    <button mat-raised-button color="primary" aria-label="menu icon" (click)="sidenav.toggle()">
         <mat-icon>menu</mat-icon>
     </button>
-    <mat-menu #menu="matMenu">
-        <button mat-menu-item routerLink="departments" class="visible-link" routerLinkActive="active-link">Departments</button>
-        <button mat-menu-item routerLink="catalogs" class="visible-link" routerLinkActive="active-link">Catalogs</button>
-      </mat-menu>
-    <span class= "title">Accountant Office</span>
-    <mat-divider [vertical]="true"></mat-divider>
+    <mat-menu #menu="matMenu"></mat-menu>
+    <span class="title">Accountant Office</span>
     <div *ngIf="section=='departments'">
         <a routerLink="departments" class="visible-link" routerLinkActive="active-link">Departments</a>
         <a [routerLink]="['/departments', departmentId]" routerLinkActive="visible-link">Employees</a>
@@ -21,4 +17,14 @@
     </button>
 </mat-toolbar>
 
-<router-outlet></router-outlet>
+<mat-sidenav-container class="example-container">
+    <mat-sidenav #sidenav mode="side" class="example-sidenav" [fixedInViewport]=true [fixedTopGap]="60">
+        <button mat-menu-item routerLink="departments" class="visible-link" routerLinkActive="active-link">Departments</button>
+        <button mat-menu-item routerLink="catalogs" class="visible-link" routerLinkActive="active-link">Catalogs</button>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+
+</mat-sidenav-container>

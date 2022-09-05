@@ -8,7 +8,7 @@ using AutoMapper;
 
 namespace AccountantOffice.UseCases.Cases
 {
-    public class EmployeeBusinessCases
+    public class EmployeeBusinessCases : IEmployeeBusinessCases
     {
         private readonly IRepository<Employee> repo;
         private readonly IRepository<Department> depRepo;
@@ -21,12 +21,12 @@ namespace AccountantOffice.UseCases.Cases
             this.mapper = mapper;
         }
 
-        public IEnumerable<Employee> GetEmployees(uint page, uint items)
+        public IEnumerable<Employee> GetEmployees(int page, int items)
         {
             return repo.GetList(page, items).ToList();
         }
     
-        public IEnumerable<EmployeeModel> GetEmployees(Guid departmentId, uint page, uint items)
+        public IEnumerable<EmployeeModel> GetEmployees(Guid departmentId, int page, int items)
         {
             var employees = repo.GetList(e => e.DepartmentId == departmentId, page, items);
             return mapper.ProjectTo<EmployeeModel>(employees);

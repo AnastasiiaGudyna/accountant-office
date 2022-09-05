@@ -14,6 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatInputModule} from '@angular/material/input';
+import {MatSidenavModule} from '@angular/material/sidenav';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import {MatInputModule} from '@angular/material/input';
     MatIconModule,
     MatMenuModule,
     MatInputModule,
+    MatSidenavModule,
     FormsModule
   ],
   providers: [

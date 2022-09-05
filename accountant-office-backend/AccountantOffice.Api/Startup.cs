@@ -20,7 +20,7 @@ namespace AccountantOffice.Api
     public class Startup
     {
         public IConfiguration Configuration { get; }
-        private readonly string SpecificOrigins = "specificOrigins";
+        private const string SpecificOrigins = "specificOrigins";
 
         public Startup(IConfiguration configuration)
         {
@@ -42,12 +42,12 @@ namespace AccountantOffice.Api
                 .UseLazyLoadingProxies()
                 .UseNpgsql("name=ConnectionStrings:AccountantConnectionString")
             );
-            services.AddTransient<DepartmentBusinessCases>();
-            services.AddTransient<EmployeeBusinessCases>();
+            services.AddTransient<IDepartmentBusinessCases, DepartmentBusinessCases>();
+            services.AddTransient<IEmployeeBusinessCases, EmployeeBusinessCases>();
             services.AddTransient<CatalogBusinessCases>();
             services.AddScoped<IRepository<Department>, Repository<Department>>();
             services.AddScoped<IRepository<Employee>, Repository<Employee>>();
-            services.AddScoped<IRepository<JobCategory>, Repository<JobCategory>>();
+            services.AddScoped<ICatalogRepository, CatalogRepository>();
             services.AddAutoMapper(typeof(MapperProfile));
             services.AddSwaggerGen(c =>
             {

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AccountantOffice.Core.Entities;
 using AccountantOffice.UseCases.Interfaces;
 using AccountantOffice.UseCases.Models;
@@ -10,30 +11,34 @@ namespace AccountantOffice.UseCases.Cases
 {
     public class CatalogBusinessCases
     {
-        private readonly IRepository<JobCategory> repo;
+        private readonly ICatalogRepository repo;
         private readonly IMapper mapper;
 
-        public CatalogBusinessCases(IRepository<JobCategory> repo, IMapper mapper)
+        public CatalogBusinessCases(ICatalogRepository repo, IMapper mapper)
         {
             this.repo = repo;
             this.mapper = mapper;
         }
 
-        public IEnumerable<JobCategoryModel> GetJobCategories()
+        public async Task<IEnumerable<JobCategoryModel>> GetJobCategoriesAsync()
         {
-            return mapper.ProjectTo<JobCategoryModel>(repo.GetList()).ToList();
+            var catalog = await repo.GetCatalogAsync("Job Categories");
+            return mapper.ProjectTo<JobCategoryModel>(catalog.CatalogValues.AsQueryable());
         }
 
-        public Guid Create(CreateJobCategoryModel item)
+        public async Task<Guid> CreateAsync(CreateJobCategoryModel item)
         {
-            return repo.CreateItem(mapper.Map<JobCategory>(item));
+            var catalogValue = mapper.Map<CatalogValues>(item);
+            var catalog = await repo.GetCatalogAsync("Job Categories");
+            catalogValue.Catalog = catalog;
+            return await repo.CreateItemAsync(catalogValue);
         }
 
-        public Guid Delete(Guid id)
+        public async Task<Guid> DeleteAsync(Guid id)
         {
-            var item = repo.GetItemById(id);
+            var item = await repo.GetCatalogValueAsync(id);
             //check that nothing is related to this category
-            return repo.DeleteItem(item);
+            return await repo.DeleteItemAsync(item);
         }
     }
 }

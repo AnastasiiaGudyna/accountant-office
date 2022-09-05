@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AccountantOffice.UseCases.Cases;
 using AccountantOffice.UseCases.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -28,9 +29,9 @@ namespace AccountantOffice.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("job-categories")]
-        public IEnumerable<JobCategoryModel> GetJobCategories()
+        public Task<IEnumerable<JobCategoryModel>> GetJobCategories()
         {
-            return cases.GetJobCategories();
+            return cases.GetJobCategoriesAsync();
         }
 
         /// <summary>
@@ -38,9 +39,9 @@ namespace AccountantOffice.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPut("job-categories")]
-        public Guid CreateJobCategory([FromBody] CreateJobCategoryModel category)
+        public Task<Guid> CreateJobCategory([FromBody] CreateJobCategoryModel category)
         {
-            return cases.Create(category);
+            return cases.CreateAsync(category);
         }
 
         /// <summary>
@@ -48,9 +49,9 @@ namespace AccountantOffice.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpDelete("job-categories/{id:guid}")]
-        public Guid GetJobCategories(Guid id)
+        public Task<Guid> GetJobCategories(Guid id)
         {
-            return cases.Delete(id);
+            return cases.DeleteAsync(id);
         }
 
         /// <summary>
