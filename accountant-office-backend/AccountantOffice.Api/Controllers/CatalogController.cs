@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AccountantOffice.Api.Controllers
 {
     /// <summary>
-    /// controller for different lists used in application
+    /// Controller for different lists used in application
     /// </summary>
     [Route("catalogs")]
     public class CatalogController : ControllerBase
@@ -25,43 +25,54 @@ namespace AccountantOffice.Api.Controllers
         }
 
         /// <summary>
-        /// Retrieves list of job categories
+        /// Retrieves all catalogs
         /// </summary>
-        /// <returns></returns>
-        [HttpGet("job-categories")]
-        public Task<IEnumerable<JobCategoryModel>> GetJobCategories()
+        /// <returns>List of <see cref="CatalogModel"/></returns>
+        [HttpGet]
+        public IEnumerable<CatalogModel> GetCatalogs()
         {
-            return cases.GetJobCategoriesAsync();
+            return cases.GetCatalogs();
+        }
+        
+        /// <summary>
+        /// Retrieves catalogs with specific id
+        /// </summary>
+        /// <param name="catalogId">catalog id</param>
+        /// <returns></returns>
+        [HttpGet("{catalogId:guid}")]
+        public Task<CatalogModel> GetCatalogAsync(Guid catalogId)
+        {
+            return cases.GetCatalogAsync(catalogId);
+        }
+        
+        /// <summary>
+        /// Retrieves catalog values
+        /// </summary>
+        /// <returns>catalog value id</returns>
+        [HttpGet("{catalogId:guid}/catalog-value")]
+        public Task<IEnumerable<string>> GetValuesAsync(Guid catalogId)
+        {
+            return cases.GetCatalogValuesAsync(catalogId);
+        }
+        
+        /// <summary>
+        /// Creates catalog value
+        /// </summary>
+        /// <returns>catalog value id</returns>
+        [HttpPut("{catalogId:guid}/catalog-value")]
+        public Task<Guid> CreateValueAsync(Guid catalogId, [FromBody] CatalogValueModel item)
+        {
+            return cases.CreateAsync(catalogId, item);
         }
 
         /// <summary>
-        /// Creates job category
+        /// Deletes catalog value
         /// </summary>
-        /// <returns></returns>
-        [HttpPut("job-categories")]
-        public Task<Guid> CreateJobCategory([FromBody] CreateJobCategoryModel category)
+        /// <returns>catalog value id</returns>
+        [HttpDelete("{catalogId:guid}/catalog-value/{id:guid}")]
+        public Task<Guid> DeleteValueAsync(Guid catalogId, Guid id)
         {
-            return cases.CreateAsync(category);
-        }
-
-        /// <summary>
-        /// Deletes job category
-        /// </summary>
-        /// <returns></returns>
-        [HttpDelete("job-categories/{id:guid}")]
-        public Task<Guid> GetJobCategories(Guid id)
-        {
-            return cases.DeleteAsync(id);
-        }
-
-        /// <summary>
-        /// Retrieves list skills
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("skills")]
-        public IEnumerable<string> GetSkills()
-        {
-            return new List<string>{"DB", "Java", "JavaScript"};
+            return cases.DeleteAsync(catalogId, id);
         }
     }
 }

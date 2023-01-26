@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { Catalog } from '../../services/api-catalog.service';
+import { Component, OnInit } from '@angular/core';
+import { Catalog } from '../../models/catalog.model';
+import { ApiCatalogService } from '../../services/api-catalog.service';
 
 @Component({
   selector: 'app-catalogs',
@@ -7,8 +8,11 @@ import { Catalog } from '../../services/api-catalog.service';
   styleUrls: ['./catalogs.component.less']
 })
 
-export class CatalogsComponent {
-
-  public catalogEnum: typeof Catalog = Catalog;
-
+export class CatalogsComponent implements OnInit{
+  public catalogs: Array<Catalog> = [];
+  constructor(private service: ApiCatalogService){}
+  
+  ngOnInit(): void {
+    this.service.getAll().subscribe(items => this.catalogs = items);
+  }
 }

@@ -1,6 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AccountantOffice.Core.Entities;
 
@@ -13,4 +12,5 @@ public interface ICatalogRepository
     Task<Guid> CreateItemAsync(CatalogValues item);
     Task<Guid> DeleteItemAsync(CatalogValues item);
     Task<CatalogValues> GetCatalogValueAsync(Guid id);
+    IQueryable<Catalog> GetCatalogs();
 }

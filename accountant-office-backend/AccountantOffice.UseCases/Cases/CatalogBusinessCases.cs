@@ -6,6 +6,7 @@ using AccountantOffice.Core.Entities;
 using AccountantOffice.UseCases.Interfaces;
 using AccountantOffice.UseCases.Models;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 namespace AccountantOffice.UseCases.Cases
 {
@@ -20,25 +21,43 @@ namespace AccountantOffice.UseCases.Cases
             this.mapper = mapper;
         }
 
-        public async Task<IEnumerable<JobCategoryModel>> GetJobCategoriesAsync()
+        public IEnumerable<CatalogModel> GetCatalogs()
         {
-            var catalog = await repo.GetCatalogAsync("Job Categories");
-            return mapper.ProjectTo<JobCategoryModel>(catalog.CatalogValues.AsQueryable());
+            return mapper.ProjectTo<CatalogModel>(repo.GetCatalogs());
         }
 
-        public async Task<Guid> CreateAsync(CreateJobCategoryModel item)
+        public async Task<CatalogModel> GetCatalogAsync(Guid catalogId)
         {
-            var catalogValue = mapper.Map<CatalogValues>(item);
-            var catalog = await repo.GetCatalogAsync("Job Categories");
-            catalogValue.Catalog = catalog;
+            var catalog = await repo.GetCatalogAsync(catalogId);
+            return mapper.Map<CatalogModel>(catalog);
+        }
+
+        public async Task<Guid> CreateAsync(Guid catalogId, CatalogValueModel item)
+        {
+            var catalogValue = new CatalogValues
+            {
+                Value = item.Value,
+                Catalog = await repo.GetCatalogAsync(catalogId)
+            };
+            
             return await repo.CreateItemAsync(catalogValue);
         }
 
-        public async Task<Guid> DeleteAsync(Guid id)
+        public async Task<Guid> DeleteAsync(Guid catalogId, Guid id)
         {
             var item = await repo.GetCatalogValueAsync(id);
+            if (item.CatalogId != catalogId)
+            {
+                throw new Exception("Incorrect catalog for deletion");
+            }
             //check that nothing is related to this category
             return await repo.DeleteItemAsync(item);
+        }
+
+        public async Task<IEnumerable<string>> GetCatalogValuesAsync(Guid catalogId)
+        {
+            var catalog = await repo.GetCatalogAsync(catalogId);
+            return catalog.CatalogValues.Select(cv => cv.Value);
         }
     }
 }

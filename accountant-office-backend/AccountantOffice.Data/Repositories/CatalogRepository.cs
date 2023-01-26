@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AccountantOffice.Core.Entities;
 using AccountantOffice.Data.DBContext;
@@ -44,5 +45,10 @@ public class CatalogRepository : ICatalogRepository
     public async Task<CatalogValues> GetCatalogValueAsync(Guid id)
     {
         return await context.CatalogValues.FindAsync(id);
+    }
+
+    public IQueryable<Catalog> GetCatalogs()
+    {
+        return context.Catalogs;
     }
 }

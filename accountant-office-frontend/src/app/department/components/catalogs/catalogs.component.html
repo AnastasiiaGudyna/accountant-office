@@ -1,8 +1,7 @@
 <mat-tab-group>
-    <mat-tab label="Job Categories"> 
-        <app-catalog [catalog]='catalogEnum.JobCategory'></app-catalog>
-    </mat-tab>
-    <mat-tab label="Skills"> 
-        <app-catalog [catalog]='catalogEnum.Skill'></app-catalog>
-    </mat-tab>
+    <div *ngFor='let item of catalogs'>
+        <mat-tab label={{item.catalogName}}>
+            <app-catalog [catalog]='item'></app-catalog>
+        </mat-tab>
+    </div>
 </mat-tab-group>

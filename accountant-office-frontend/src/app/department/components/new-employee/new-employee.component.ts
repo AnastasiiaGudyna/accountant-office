@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Employee } from '../../models/employee.model';
-import { ApiCatalogService, Catalog } from '../../services/api-catalog.service';
+import { ApiCatalogService } from '../../services/api-catalog.service';
 
 @Component({
   selector: 'app-new-employee',
@@ -18,7 +18,7 @@ export class NewEmployeeComponent implements OnInit {
     ) { }
     
   ngOnInit(): void {
-    this.catalogService.get(Catalog.JobCategory).subscribe(items => this.jobCategories = items);
+    //this.catalogService.get(Catalog.JobCategory).subscribe(items => this.jobCategories = items);
   }
     
   public onNoClick(): void {

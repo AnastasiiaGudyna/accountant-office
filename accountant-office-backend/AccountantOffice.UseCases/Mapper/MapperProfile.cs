@@ -24,6 +24,9 @@ namespace AccountantOffice.UseCases.Mapper
             CreateMap<CreateJobCategoryModel, CatalogValues>()
                 .ForMember(d => d.Value, m => m.MapFrom(
                     s => s.Name));
+
+            CreateMap<Catalog, CatalogModel>();
+            CreateMap<CatalogValues, CatalogValueModel>();
         }
     }
 }

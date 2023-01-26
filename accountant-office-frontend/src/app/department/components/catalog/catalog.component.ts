@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ApiCatalogService, Catalog } from 'src/app/department/services/api-catalog.service';
+import { ApiCatalogService } from 'src/app/department/services/api-catalog.service';
+import { Catalog } from '../../models/catalog.model';
 
 @Component({
   selector: 'app-catalog',
@@ -8,34 +9,31 @@ import { ApiCatalogService, Catalog } from 'src/app/department/services/api-cata
 })
 export class CatalogComponent implements OnInit {
 
-  public catalogArray: Array<any> = [];
   @Input()
-  public catalog: Catalog = Catalog.JobCategory;
+  public catalog!: Catalog;
 
   constructor(private service: ApiCatalogService) { }
 
-  ngOnInit(): void {
-    this.getAll();
-  }
+  ngOnInit(): void {  }
+
   public addNew(): void {
-    this.catalogArray.push({new: true});
+    this.catalog.catalogValues.push({new: true});
   }
 
   public save(item: any): void {
-    this.service.put(this.catalog, item)
+    this.service.put(this.catalog.id, item)
     .subscribe(result => {
       item.new = false;
+      item.id = result;
     });
   }
 
-  public delete(id: string): void {
-    this.service.delete(this.catalog, id)
-    .subscribe(() => {
-      this.catalogArray = this.catalogArray.filter(c => c.id !== id);
-    });
-  }
-
-  private getAll(): void {
-    this.service.get(this.catalog).subscribe(items => this.catalogArray = items);
+  public delete(id: string | undefined): void {
+    if(id != undefined) {
+      this.service.delete(this.catalog.id, id)
+      .subscribe(() => {
+        this.catalog.catalogValues = this.catalog.catalogValues.filter(c => c.id !== id);
+      });
+    }
   }
 }
