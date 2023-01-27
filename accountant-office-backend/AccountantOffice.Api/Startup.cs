@@ -17,16 +17,30 @@ using Microsoft.OpenApi.Models;
 
 namespace AccountantOffice.Api
 {
+    /// <summary>
+    /// Startup class
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// Startup Configuration field of type <see cref="IConfiguration"/>
+        /// </summary>
         public IConfiguration Configuration { get; }
         private const string SpecificOrigins = "specificOrigins";
 
+        /// <summary>
+        /// Startup constructor
+        /// </summary>
+        /// <param name="configuration">Startup Configuration</param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
+        /// <summary>
+        /// Configure Services method
+        /// </summary>
+        /// <param name="services"><see cref="IServiceCollection"/></param>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors(options =>
@@ -58,6 +72,11 @@ namespace AccountantOffice.Api
             });
         }
 
+        /// <summary>
+        /// Configure Method
+        /// </summary>
+        /// <param name="app"><see cref="IApplicationBuilder"/></param>
+        /// <param name="env"><see cref="IWebHostEnvironment"/></param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseCors(SpecificOrigins);

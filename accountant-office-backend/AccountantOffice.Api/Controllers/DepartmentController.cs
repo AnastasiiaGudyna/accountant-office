@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using AccountantOffice.Api.Models;
 using AccountantOffice.Core.Entities;
-using AccountantOffice.UseCases.Cases;
 using AccountantOffice.UseCases.Interfaces;
 using AccountantOffice.UseCases.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -21,13 +20,14 @@ namespace AccountantOffice.Api.Controllers
         /// <summary>
         /// Department controller constructor
         /// </summary>
-        /// <param name="departmentCases"></param>
-        /// <param name="employeeCases"></param>
+        /// <param name="departmentCases">Department service inherited from <see cref="IDepartmentBusinessCases"/></param>
+        /// <param name="employeeCases">Employee service inherited from <see cref="IEmployeeBusinessCases"/></param>
         public DepartmentController(IDepartmentBusinessCases departmentCases, IEmployeeBusinessCases employeeCases)
         {
             this.departmentCases = departmentCases;
             this.employeeCases = employeeCases;
         }
+        
         /// <summary>
         /// Get Departments
         /// </summary>
@@ -49,7 +49,7 @@ namespace AccountantOffice.Api.Controllers
         /// Get Department by id
         /// </summary>
         /// <param name="id">Guid of department</param>
-        /// <returns><see cref="Department"/></returns>
+        /// <returns><see cref="DepartmentModel"/></returns>
         [HttpGet("{id:guid}")]
         public DepartmentModel Get(Guid id)
         {   

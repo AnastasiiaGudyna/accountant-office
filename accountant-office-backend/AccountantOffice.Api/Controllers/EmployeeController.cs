@@ -1,21 +1,28 @@
 using System;
 using System.Collections.Generic;
 using AccountantOffice.Core.Entities;
-using AccountantOffice.UseCases.Cases;
 using AccountantOffice.UseCases.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccountantOffice.Api.Controllers
 {
+    /// <summary>
+    /// Work with employees
+    /// </summary>
     [Route("employees")]
     public class EmployeeController : ControllerBase
     {
-        private readonly IEmployeeBusinessCases cases;
+        private readonly IEmployeeBusinessCases employeeCases;
 
-        public EmployeeController(IEmployeeBusinessCases cases)
+        /// <summary>
+        /// Employee controller constructor
+        /// </summary>
+        /// <param name="employeeCases"></param>
+        public EmployeeController(IEmployeeBusinessCases employeeCases)
         {
-            this.cases = cases;
+            this.employeeCases = employeeCases;
         }
+        
         /// <summary>
         /// Get Employees
         /// </summary>
@@ -25,7 +32,7 @@ namespace AccountantOffice.Api.Controllers
         [HttpGet]
         public IEnumerable<Employee> GetEmployees([FromQuery] int page, [FromQuery] int itemsOnPage)
         {   
-            return cases.GetEmployees(page, itemsOnPage);
+            return employeeCases.GetEmployees(page, itemsOnPage);
         }
         
         /// <summary>
@@ -36,7 +43,7 @@ namespace AccountantOffice.Api.Controllers
         [HttpGet("{id:guid}")]
         public Employee Get(Guid id)
         {   
-            return cases.Get(id);
+            return employeeCases.Get(id);
         }
         
         /// <summary>
@@ -47,7 +54,7 @@ namespace AccountantOffice.Api.Controllers
         [HttpPut]
         public Guid Put([FromBody] Employee item)
         {
-            return cases.Create(item);
+            return employeeCases.Create(item);
         }
 
         /// <summary>
@@ -59,7 +66,7 @@ namespace AccountantOffice.Api.Controllers
         [HttpPost("{id:guid}")]
         public Guid Post([FromBody] Employee item, [FromRoute] Guid id)
         {
-            return cases.Update(item);
+            return employeeCases.Update(item);
         }
         
         /// <summary>
@@ -70,7 +77,7 @@ namespace AccountantOffice.Api.Controllers
         [HttpDelete("{id:guid}")]
         public Guid Post([FromRoute] Guid id)
         {
-            return cases.Delete(id);
+            return employeeCases.Delete(id);
         }
     }
 }
