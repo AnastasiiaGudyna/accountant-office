@@ -33,7 +33,7 @@ services:
   dotnet.api:
     container_name: dotnet.api
     build:
-      context: ./accountant-office-backend
+      context: ./accountant-office-backend/AccountantOffice
       dockerfile: ./AccountantOffice.Api/Dockerfile
     ports:
       - 5011:80
