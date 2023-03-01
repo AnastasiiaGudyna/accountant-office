@@ -1,7 +1,6 @@
-namespace AccountantOffice.UseCases.Models
+namespace AccountantOffice.UseCases.Models;
+
+public class CreateDepartmentModel
 {
-    public class CreateDepartmentModel
-    {
-        public string Name { get; set; }
-    }
+    public string Name { get; set; }
 }

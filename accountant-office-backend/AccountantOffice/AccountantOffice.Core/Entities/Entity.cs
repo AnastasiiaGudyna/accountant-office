@@ -1,10 +1,9 @@
 using System;
 
-namespace AccountantOffice.Core.Entities
+namespace AccountantOffice.Core.Entities;
+
+public abstract class Entity
 {
-    public abstract class Entity
-    {
-        public Guid Id { get; set; }
-        public DateTime CreateDate { get; set; }
-    }
+    public Guid Id { get; set; }
+    public DateTime CreateDate { get; set; }
 }

@@ -391,3 +391,6 @@ baseline.json
 
 # Husky
 .husky/_
+
+# Docker compose environment variables
+.env
