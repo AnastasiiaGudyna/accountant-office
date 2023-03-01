@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 
-namespace AccountantOffice.Core.Entities
+namespace AccountantOffice.Core.Entities;
+
+public class Department : Entity
 {
-    public class Department : Entity
-    {
-        public string Name { get; set; }
-        public virtual IEnumerable<Employee> Employees { get; set; } = new List<Employee>();
-    }
+    public string Name { get; set; }
+    public virtual IEnumerable<Employee> Employees { get; set; } = new List<Employee>();
 }
