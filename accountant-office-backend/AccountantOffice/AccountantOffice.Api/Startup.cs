@@ -80,24 +80,7 @@ public class Startup
                 options.Audience = "accountant_office";
                 options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
             });
-        services.AddAuthorization(options =>
-        {
-            options.AddPolicy("read", policy =>
-            {
-                policy.RequireAuthenticatedUser();
-                policy.RequireClaim("scope", "accountant_office.read", "admin");
-            });
-            options.AddPolicy("change", policy =>
-            {
-                policy.RequireAuthenticatedUser();
-                policy.RequireClaim("scope", "accountant_office.write", "admin");
-            });
-            options.AddPolicy("delete", policy =>
-            {
-                policy.RequireAuthenticatedUser();
-                policy.RequireClaim("scope", "accountant_office.delete", "admin");
-            });
-        });
+        services.AddAuthorization(AuthorizationPolicies.ConfigurePolicies);
     }
 
     /// <summary>

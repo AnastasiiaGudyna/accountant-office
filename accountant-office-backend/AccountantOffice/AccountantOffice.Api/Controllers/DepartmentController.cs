@@ -53,7 +53,7 @@ public class DepartmentController : ControllerBase
     /// <param name="id">Guid of department</param>
     /// <returns><see cref="DepartmentModel"/></returns>
     [HttpGet("{id:guid}")]
-    [Authorize(Policy = "read")]
+    [Authorize(Policy = AuthorizationPolicies.Read)]
     public DepartmentModel Get(Guid id)
     {   
         return departmentCases.Get(id);
@@ -65,7 +65,7 @@ public class DepartmentController : ControllerBase
     /// <param name="item">new Department</param>
     /// <returns>id</returns>
     [HttpPut]
-    [Authorize(Policy = "change")]
+    [Authorize(Policy = AuthorizationPolicies.Change)]
     public Guid Put([FromBody] CreateDepartmentModel item)
     {
         return departmentCases.Create(item);
@@ -78,7 +78,7 @@ public class DepartmentController : ControllerBase
     /// <param name="id"></param>
     /// <returns>id</returns>
     [HttpPost("{id:guid}")]
-    [Authorize(Policy = "change")]
+    [Authorize(Policy = AuthorizationPolicies.Change)]
     public Guid Post([FromBody] Department item, [FromRoute] Guid id)
     {
         return departmentCases.Update(item);
@@ -90,7 +90,7 @@ public class DepartmentController : ControllerBase
     /// <param name="id">id of Department for deletion</param>
     /// <returns>id</returns>
     [HttpDelete("{id:guid}")]
-    [Authorize(Policy = "change")]
+    [Authorize(Policy = AuthorizationPolicies.Delete)]
     public Guid Delete([FromRoute] Guid id)
     {
         return departmentCases.Delete(id);
@@ -104,7 +104,7 @@ public class DepartmentController : ControllerBase
     /// <param name="itemsOnPage">Items on page</param>
     /// <returns>List of Employees. For more information see <see cref="IEnumerable{EmployeeModel}"/>></returns>
     [HttpGet("{id:guid}/employees")]
-    [Authorize(Policy = "read")]
+    [Authorize(Policy = AuthorizationPolicies.Read)]
     public IEnumerable<EmployeeModel> GetEmployees([FromRoute] Guid id, int page, int itemsOnPage)
     {
         return employeeCases.GetEmployees(id, page, itemsOnPage);
