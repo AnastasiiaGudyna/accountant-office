@@ -27,6 +27,7 @@ public class Startup
     /// </summary>
     public IConfiguration Configuration { get; }
     private const string SpecificOrigins = "specificOrigins";
+    private const string AuthenticationSchemeBearer = "Bearer";
 
     /// <summary>
     /// Startup constructor
@@ -65,10 +66,37 @@ public class Startup
         services.AddAutoMapper(typeof(MapperProfile));
         services.AddSwaggerGen(c =>
         {
-            c.SwaggerDoc("v1", new OpenApiInfo {Title = "AccountantOffice.Api", Version = "v1"});
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "AccountantOffice.Api", Version = "v1" });
             var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
             c.IncludeXmlComments(xmlPath);
+        });
+        services
+            .AddAuthentication(AuthenticationSchemeBearer)
+            .AddJwtBearer(AuthenticationSchemeBearer, options =>
+            {
+                options.Authority = "https://localhost:5001";
+
+                options.Audience = "accountant_office";
+                options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
+            });
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("read", policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.RequireClaim("scope", "accountant_office.read", "admin");
+            });
+            options.AddPolicy("change", policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.RequireClaim("scope", "accountant_office.write", "admin");
+            });
+            options.AddPolicy("delete", policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.RequireClaim("scope", "accountant_office.delete", "admin");
+            });
         });
     }
 
@@ -88,7 +116,13 @@ public class Startup
         app.UseSwagger();
         app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AccountantOffice.Api v1"));
         app.UseRouting();
+        app.UseAuthentication();
         app.UseAuthorization();
-        app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints
+                .MapControllers();
+            //.RequireAuthorization();
+        });
     }
 }

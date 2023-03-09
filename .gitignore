@@ -394,3 +394,6 @@ baseline.json
 
 # Docker compose environment variables
 .env
+
+# Identity Server generated keys
+keys/
