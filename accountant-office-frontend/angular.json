@@ -110,5 +110,8 @@
       }
     }
   },
-  "defaultProject": "accountant-office-front"
+  "defaultProject": "accountant-office-front",
+  "cli": {
+    "analytics": false
+  }
 }

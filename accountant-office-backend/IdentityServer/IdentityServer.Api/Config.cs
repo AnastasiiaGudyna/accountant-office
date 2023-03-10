@@ -1,3 +1,4 @@
+using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
 
 namespace IdentityServer.Api;
@@ -19,7 +20,14 @@ public static class Config
                 ClientSecrets = { new Secret("secret".Sha256()) },
 
                 // scopes that client has access to
-                AllowedScopes = { "accountant_office.read", "accountant_office.write", "accountant_office.delete" }
+                AllowedScopes =
+                {
+                    "accountant_office.read",
+                    "accountant_office.write",
+                    "accountant_office.delete",
+                    IdentityServerConstants.StandardScopes.OpenId,
+                    IdentityServerConstants.StandardScopes.Profile
+                }
             }
         };
     
@@ -46,7 +54,7 @@ public static class Config
         {
             new IdentityResources.OpenId(),
             new (
-                name: "profile",
+                name: IdentityServerConstants.StandardScopes.Profile,
                 userClaims: new[] { "name", "surname", "email" },
                 displayName: "Your profile data")
         };
