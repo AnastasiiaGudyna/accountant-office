@@ -15,10 +15,14 @@ import { MatIconModule } from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatInputModule} from '@angular/material/input';
 import {MatSidenavModule} from '@angular/material/sidenav';
+import { AuthService } from './core/services/auth.service';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import { SigninCallbackComponent } from './core/components/signin-callback/signin-callback.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SigninCallbackComponent
   ],
   imports: [
     BrowserModule,
@@ -36,11 +40,18 @@ import {MatSidenavModule} from '@angular/material/sidenav';
     FormsModule
   ],
   providers: [
-  {
-    provide: HTTP_INTERCEPTORS,
-    useClass: ApiInterceptor,
-    multi: true
-  }  ],
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ApiInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+    AuthService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

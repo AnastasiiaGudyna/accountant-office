@@ -42,6 +42,18 @@ services:
     depends_on:
       - flyway
 
+  identity-server:
+    container_name: identity-server
+    build:
+      context: ./accountant-office-backend/IdentityServer
+      dockerfile: ./IdentityServer.Api/Dockerfile
+    ports:
+      - 5001:80
+    environment:
+      - ConnectionStrings__AccountantConnectionString=Server=db;Port=5432;Database=${POSTGRES_DB};User Id=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};
+    depends_on:
+      - flyway
+
   front:
     container_name: front
     build: 

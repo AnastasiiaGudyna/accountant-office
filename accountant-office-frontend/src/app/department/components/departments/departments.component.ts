@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { NewDepartmentComponent } from '../new-department/new-department.component';
 import { Department } from '../../models/department.model';
 import { PageEvent } from '@angular/material/paginator';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-departments',
@@ -21,6 +22,7 @@ export class DepartmentsComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private authService: AuthService,
     private api: ApiDepartmentService,
     public dialog: MatDialog) { }
 

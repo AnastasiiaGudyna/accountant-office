@@ -397,3 +397,5 @@ baseline.json
 
 # Identity Server generated keys
 keys/
+
+.angular/

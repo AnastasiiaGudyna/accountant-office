@@ -5,20 +5,21 @@ namespace IdentityServer.Api;
 
 public static class Config
 {
-    public static IEnumerable<Client> GetClients() =>
-        new List<Client>
+    public static IEnumerable<Client> GetClients(string clientBaseUrl)
+    {
+        return new List<Client>
         {
-            new ()
+            new()
             {
                 ClientName = "Accountant Office Web",
                 ClientId = "aow0001",
 
                 // no interactive user, use the clientid/secret for authentication
-                AllowedGrantTypes = GrantTypes.ClientCredentials,
+                AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
 
                 // secret for authentication
                 ClientSecrets = { new Secret("secret".Sha256()) },
-
+                RedirectUris = { clientBaseUrl + "/signin-callback" },
                 // scopes that client has access to
                 AllowedScopes =
                 {
@@ -26,11 +27,16 @@ public static class Config
                     "accountant_office.write",
                     "accountant_office.delete",
                     IdentityServerConstants.StandardScopes.OpenId,
-                    IdentityServerConstants.StandardScopes.Profile
-                }
+                    IdentityServerConstants.StandardScopes.Profile,
+                    IdentityServerConstants.StandardScopes.OfflineAccess
+                },
+                AllowOfflineAccess = true,
+                IdentityTokenLifetime = 450,
+                AllowedCorsOrigins = new List<string> { clientBaseUrl }
             }
         };
-    
+    }
+
     public static IEnumerable<ApiResource> GetApiResources() =>
         new List<ApiResource>
         {
@@ -53,9 +59,6 @@ public static class Config
         new List<IdentityResource>
         {
             new IdentityResources.OpenId(),
-            new (
-                name: IdentityServerConstants.StandardScopes.Profile,
-                userClaims: new[] { "name", "surname", "email" },
-                displayName: "Your profile data")
+            new IdentityResources.Profile()
         };
 }
