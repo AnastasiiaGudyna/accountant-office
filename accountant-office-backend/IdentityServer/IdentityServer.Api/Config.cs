@@ -20,6 +20,7 @@ public static class Config
                 // secret for authentication
                 ClientSecrets = { new Secret("secret".Sha256()) },
                 RedirectUris = { clientBaseUrl + "/signin-callback" },
+                PostLogoutRedirectUris = { clientBaseUrl },
                 // scopes that client has access to
                 AllowedScopes =
                 {

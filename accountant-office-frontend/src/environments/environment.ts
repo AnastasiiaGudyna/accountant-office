@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   baseUrl: 'https://localhost:6001/',
-  stsAuthority: 'https://localhost:5001/',
+  stsAuthority: 'https://localhost:7001/',
   clientId: 'aow0001',
   clientRoot: 'http://localhost:4200/',
   clientScope: 'openid profile offline_access accountant_office.read',

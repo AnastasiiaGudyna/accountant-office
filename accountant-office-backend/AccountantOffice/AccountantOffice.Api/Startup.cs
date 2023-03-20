@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.OpenApi.Models;
 
 namespace AccountantOffice.Api;
@@ -44,6 +45,8 @@ public class Startup
     /// <param name="services"><see cref="IServiceCollection"/></param>
     public void ConfigureServices(IServiceCollection services)
     {
+        IdentityModelEventSource.ShowPII = true;
+        var identityServerUrl = Configuration["IdentityServerUrl"];
         services.AddCors(options =>
         {
             options.AddPolicy(name: SpecificOrigins,
@@ -75,10 +78,12 @@ public class Startup
             .AddAuthentication(AuthenticationSchemeBearer)
             .AddJwtBearer(AuthenticationSchemeBearer, options =>
             {
-                options.Authority = "https://localhost:5001";
-
+                options.Authority = identityServerUrl;
                 options.Audience = "accountant_office";
                 options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
+                //for docker 
+                //System.InvalidOperationException: The MetadataAddress or Authority must use HTTPS unless disabled for development by setting RequireHttpsMetadata=false.
+                options.RequireHttpsMetadata = false;
             });
         services.AddAuthorization(AuthorizationPolicies.ConfigurePolicies);
     }

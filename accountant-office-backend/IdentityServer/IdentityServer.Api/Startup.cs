@@ -8,15 +8,18 @@ public class Startup
     /// Startup Configuration field of type <see cref="IConfiguration"/>
     /// </summary>
     public IConfiguration Configuration { get; }
+    public IWebHostEnvironment Environment { get; }
     private const string SpecificOrigins = "specificOrigins";
-    
+
     /// <summary>
     /// Startup constructor
     /// </summary>
     /// <param name="configuration">Startup Configuration</param>
-    public Startup(IConfiguration configuration)
+    /// <param name="environment"><see cref="IWebHostEnvironment"/></param>
+    public Startup(IWebHostEnvironment environment, IConfiguration configuration)
     {
         Configuration = configuration;
+        Environment = environment;
     }
     public void ConfigureServices(IServiceCollection services)
     {
@@ -29,7 +32,7 @@ public class Startup
                 });
         });
         services.AddRazorPages();
-        services.ConfigureIdentityServer(Configuration);
+        services.ConfigureIdentityServer(Environment, Configuration);
     }
 
     public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
