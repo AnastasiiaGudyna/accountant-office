@@ -9,7 +9,10 @@ public class MapperProfile : Profile
 {
     public MapperProfile()
     {
-        CreateMap<Employee, EmployeeModel>().ReverseMap();
+        bool showSalary = false;
+        CreateMap<Employee, EmployeeModel>()
+            .ForMember(d => d.Salary, m => m.MapFrom(s => showSalary ? s.Salary : 0))
+            .ReverseMap();
         CreateMap<Department, DepartmentModel>()
             .ForMember(d => d.AverageSalary, m => m.MapFrom(
                 s => s.Employees.Any() ? s.Employees.Average(e => e.Salary) : 0)

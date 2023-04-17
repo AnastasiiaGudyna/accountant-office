@@ -15,13 +15,10 @@ Create file .env in root.
 In .env file fill in
 | var                    | description | note |
 | ----                   | ----                                                            | ---- |
-| `POSTGRES_USER`        | database user                                                   | This variables will be used in docker-compose.yaml for db creation and comunication api with db. |
-| `POSTGRES_PASSWORD`    | database user password                                          |^     |
-| `POSTGRES_DB`          | database name                                                   |^     |
-| `CERTIFICATE_PASSWORD` | this password the same as was used when https cert was creating | ??   |
-
-with data you will use for database creation. This are variables which are used in docker-compose.yaml for db creation and comunication api with db.
-
+| `POSTGRES_USER`        | database user                                                   |↓     |
+| `POSTGRES_PASSWORD`    | database user password                                          |This variables will be used in docker-compose.yaml for db creation and comunication api with db.     |
+| `POSTGRES_DB`          | database name                                                   |↑     |
+| `CERTIFICATE_PASSWORD` | this password the same as was used when https cert was created  |      |
 
 Then in the root directory use the next commands:
 
@@ -44,10 +41,13 @@ The Identity Server uses self-signed development certificates for hosting pre-bu
 
 For applying certificates was used [Hosting ASP.NET Core images with Docker Compose over HTTPS](https://learn.microsoft.com/en-us/aspnet/core/security/docker-compose-https?view=aspnetcore-7.0)
 
-For frontend part for Auth is [oidc-client-ts library](https://authts.github.io/oidc-client-ts/index.html)
+For frontend part for Auth was used [oidc-client-ts library](https://authts.github.io/oidc-client-ts/index.html)
 
-# ToDo
+# To Do:
 
-* Different user roles
-* Admin Page with new user creation, catalogs management
-* Separate service with report generation
+* Change CORS Policies in services
+* Remove exposed DB ports
+* Make persistant DBs
+* Add different user roles
+* Create Admin Page with new user creation, scopes, roles management catalogs management
+* Create service with report generation

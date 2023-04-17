@@ -4,9 +4,11 @@ import {
   HttpHandler,
   HttpEvent,
   HttpInterceptor,
-  HttpHeaders
+  HttpHeaders,
+  HttpResponse,
+  HttpErrorResponse
 } from '@angular/common/http';
-import { Observable, switchMap, map, of } from 'rxjs';
+import { Observable, switchMap, map, of, tap } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
 @Injectable()
@@ -41,7 +43,21 @@ export class AuthInterceptor implements HttpInterceptor {
 
         let clonedReq = request.clone({ headers })
 
-        return next.handle(clonedReq);;
+        return next.handle(clonedReq)
+        .pipe(
+          tap({
+              next: (event) => {
+                let resp = event as HttpResponse<unknown>;
+                  if(resp && resp.status == 401){
+                    this.authService.renewToken();
+                  }
+                },
+              error: (e: HttpErrorResponse) => {
+                if(e.status == 401){
+                  this.authService.renewToken();
+                }
+              }
+          }));
       })
     );
   }

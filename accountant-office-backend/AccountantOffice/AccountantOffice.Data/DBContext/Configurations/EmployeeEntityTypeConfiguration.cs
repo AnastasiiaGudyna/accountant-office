@@ -18,11 +18,11 @@ public class EmployeeEntityTypeConfiguration : IEntityTypeConfiguration<Employee
             .HasColumnName("create_date")
             .IsRequired();
         builder
-            .Property(e => e.Name)
+            .Property(e => e.FirstName)
             .IsRequired()
             .HasColumnName("name");
         builder
-            .Property(e => e.Surname)
+            .Property(e => e.LastName)
             .IsRequired()
             .HasColumnName("surname");
         builder

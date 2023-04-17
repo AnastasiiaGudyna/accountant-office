@@ -1,5 +1,3 @@
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
 CREATE TABLE catalog (
     id UUID PRIMARY KEY,
     create_date TIMESTAMP NOT NULL,

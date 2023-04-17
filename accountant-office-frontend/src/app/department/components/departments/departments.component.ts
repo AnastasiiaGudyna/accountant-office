@@ -62,6 +62,10 @@ export class DepartmentsComponent implements OnInit {
     .subscribe(items => this.dataSource = items);
   }
 
+  public renew(){
+    this.authService.renewToken().subscribe();
+  }
+
   private openDialog(action: (res: any) => any, data: any = {}): void {
     const dialogRef = this.dialog.open(NewDepartmentComponent, {
       width: '300px',

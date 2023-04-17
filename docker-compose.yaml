@@ -1,37 +1,61 @@
 version: "3.9"
 services:
-  db:
-    container_name: sql.db
-    image: "postgres"
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-    ports:
-     - 5432:5432
-
   adminer:
     image: adminer
     restart: always
     ports:
       - 8080:8080
-  
-  flyway:
-    container_name: flyway
+
+  accountant.db:
+    container_name: accountant.db
+    image: "postgres"
     environment:
-      - FLYWAY_USER=${POSTGRES_USER}
-      - FLYWAY_PASSWORD=${POSTGRES_PASSWORD}
-      - FLYWAY_URL=jdbc:postgresql://db/${POSTGRES_DB}
+      POSTGRES_USER: ${ACCOUNTANT_DB_USER}
+      POSTGRES_PASSWORD: ${ACCOUNTANT_DB_PASSWORD}
+      POSTGRES_DB: ${ACCOUNTANT_DB}
+    ports:
+     - 5432:5432
+
+  identity-server.db:
+    container_name: identity-server.db
+    image: "postgres"
+    environment:
+      POSTGRES_USER: ${IDENTITY_DB_USER}
+      POSTGRES_PASSWORD: ${IDENTITY_DB_PASSWORD}
+      POSTGRES_DB: ${IDENTITY_DB}
+    ports:
+     - 5433:5432
+
+  accountant.flyway:
+    container_name: accountant.flyway
+    environment:
+      - FLYWAY_USER=${ACCOUNTANT_DB_USER}
+      - FLYWAY_PASSWORD=${ACCOUNTANT_DB_PASSWORD}
+      - FLYWAY_URL=jdbc:postgresql://accountant.db/${ACCOUNTANT_DB}
       - FLYWAY_GROUP=false
     image: flyway/flyway:latest
     command: -locations=filesystem:/flyway/sql -connectRetries=60 migrate
     volumes:
-      - ./database-configuration/sql:/flyway/sql
+      - ./database-configuration/accountant-office:/flyway/sql
     depends_on:
-      - db
+      - accountant.db
 
-  dotnet.api:
-    container_name: dotnet.api
+  identity-server.flyway:
+    container_name: identity-server.flyway
+    environment:
+      - FLYWAY_USER=${IDENTITY_DB_USER}
+      - FLYWAY_PASSWORD=${IDENTITY_DB_PASSWORD}
+      - FLYWAY_URL=jdbc:postgresql://identity-server.db/${IDENTITY_DB}
+      - FLYWAY_GROUP=false
+    image: flyway/flyway:latest
+    command: -locations=filesystem:/flyway/sql -connectRetries=60 migrate
+    volumes:
+      - ./database-configuration/entity-server:/flyway/sql
+    depends_on:
+      - identity-server.db
+
+  accountant.api:
+    container_name: accountant.api
     build:
       context: ./accountant-office-backend/AccountantOffice
       dockerfile: ./AccountantOffice.Api/Dockerfile
@@ -39,7 +63,7 @@ services:
       - 5010:80
       - 5011:443
     environment:
-      - ConnectionStrings__AccountantConnectionString=Server=db;Port=5432;Database=${POSTGRES_DB};User Id=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};
+      - ConnectionStrings__AccountantConnectionString=Server=accountant.db;Port=5432;Database=${ACCOUNTANT_DB};User Id=${ACCOUNTANT_DB_USER};Password=${ACCOUNTANT_DB_PASSWORD};
       - IdentityServerUrl=http://identity-server
       - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERTIFICATE_PASSWORD}
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
@@ -47,7 +71,7 @@ services:
     volumes:
       - $USERPROFILE\.aspnet\https:/https/
     depends_on:
-      - flyway
+      - accountant.flyway
 
   identity-server:
     container_name: identity-server
@@ -58,17 +82,18 @@ services:
       - 5000:80
       - 5001:443
     environment:
-      - ConnectionStrings__AccountantConnectionString=Server=db;Port=5432;Database=${POSTGRES_DB};User Id=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};
+      - ConnectionStrings__IdentityServerConnectionString=Server=identity-server.db;Port=5432;Database=${IDENTITY_DB};User Id=${IDENTITY_DB_USER};Password=${IDENTITY_DB_PASSWORD};
       - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERTIFICATE_PASSWORD}
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - ASPNETCORE_URLS=https://+:443;http://+:80
+      - IdentityServerConfig__IssuerUri=http://identity-server
     volumes:
       - $USERPROFILE\.aspnet\https:/https/
     depends_on:
-      - flyway
+      - identity-server.flyway
 
-  front:
-    container_name: front
+  frontend:
+    container_name: frontend
     build: 
       context: ./accountant-office-frontend
       dockerfile: Dockerfile

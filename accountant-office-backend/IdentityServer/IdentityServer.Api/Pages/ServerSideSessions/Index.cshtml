@@ -12,9 +12,6 @@
                     </div>
                 
                     <div class="card-body">
-
-                    @if (Model.UserSessions != null)
-                    {
                         <div class="row">
                             <div class="col text-center">
                                 @if (Model.UserSessions.HasPrevResults)
@@ -108,17 +105,6 @@
                         {
                             <div class="text-center">No User Sessions</div>
                         }
-                    }
-                    else
-                    { 
-                        <div class="row">
-                            <div class="col">
-                                You do not have server-side sessions enabled.
-                                To do so, use <i>AddServerSideSessions</i> on your IdentityServer configuration.
-                                See the <a href="https://docs.duendesoftware.com/identityserver/v6/ui/server_side_sessions">documentation</a> for more information.
-                            </div>
-                        </div>
-                    }
                     </div>
                 </div>
             </div>

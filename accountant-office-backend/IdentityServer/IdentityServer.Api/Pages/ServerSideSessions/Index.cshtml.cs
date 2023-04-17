@@ -8,11 +8,11 @@ namespace IdentityServer.Api.Pages.ServerSideSessions
 {
     public class IndexModel : PageModel
     {
-        private readonly ISessionManagementService _sessionManagementService;
+        private readonly ISessionManagementService sessionManagementService;
 
         public IndexModel(ISessionManagementService sessionManagementService = null)
         {
-            _sessionManagementService = sessionManagementService;
+            this.sessionManagementService = sessionManagementService;
         }
 
         public QueryResult<UserSession> UserSessions { get; set; }
@@ -28,9 +28,9 @@ namespace IdentityServer.Api.Pages.ServerSideSessions
 
         public async Task OnGet()
         {
-            if (_sessionManagementService != null)
+            if (sessionManagementService != null)
             {
-                UserSessions = await _sessionManagementService.QuerySessionsAsync(new SessionQuery
+                UserSessions = await sessionManagementService.QuerySessionsAsync(new SessionQuery
                 {
                     ResultsToken = Token,
                     RequestPriorResults = Prev == "true",
@@ -46,7 +46,7 @@ namespace IdentityServer.Api.Pages.ServerSideSessions
 
         public async Task<IActionResult> OnPost()
         {
-            await _sessionManagementService.RemoveSessionsAsync(new RemoveSessionsContext { 
+            await sessionManagementService.RemoveSessionsAsync(new RemoveSessionsContext { 
                 SessionId = SessionId,
             });
             return RedirectToPage("/ServerSideSessions/Index", new { Token, Filter, Prev });

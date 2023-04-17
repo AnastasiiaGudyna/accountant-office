@@ -7,6 +7,7 @@ using AccountantOffice.Data.Repositories;
 using AccountantOffice.UseCases.Cases;
 using AccountantOffice.UseCases.Interfaces;
 using AccountantOffice.UseCases.Mapper;
+using IdentityModel;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -80,9 +81,10 @@ public class Startup
             {
                 options.Authority = identityServerUrl;
                 options.Audience = "accountant_office";
-                options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
+                options.TokenValidationParameters.ValidTypes = new[] { JwtClaimTypes.JwtTypes.AccessToken };
                 //for docker 
                 //System.InvalidOperationException: The MetadataAddress or Authority must use HTTPS unless disabled for development by setting RequireHttpsMetadata=false.
+                //when request to identity server is made inside docker it doesn't need to be secure but error still happens 
                 options.RequireHttpsMetadata = false;
             });
         services.AddAuthorization(AuthorizationPolicies.ConfigurePolicies);

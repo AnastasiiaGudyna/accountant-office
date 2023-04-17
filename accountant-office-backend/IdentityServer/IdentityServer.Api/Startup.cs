@@ -1,4 +1,9 @@
 using IdentityServer.Api.Extensions;
+using IdentityServer.Api.Services;
+using IdentityServer.Data.DbContexts;
+using IdentityServer.Data.Mapping;
+using IdentityServer.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace IdentityServer.Api;
 
@@ -31,13 +36,27 @@ public class Startup
                     builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
                 });
         });
+        // services.AddDbContext<ConfigurationDataContext>(opt =>
+        // {
+        //     opt
+        //         .UseLazyLoadingProxies()
+        //         .UseNpgsql("name=ConnectionStrings:EntityServerConnectionString");
+        //     
+        // });
+        services.AddDbContext<OperationalDataContext>(opt =>
+        {
+            opt
+                .UseLazyLoadingProxies()
+                .UseNpgsql("name=ConnectionStrings:IdentityServerConnectionString");
+            
+        });
         services.AddRazorPages();
         services.ConfigureIdentityServer(Environment, Configuration);
+        services.AddAutoMapper(typeof(MapperProfile));
     }
 
     public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
     {
-        //loggerFactory.AddConsole(LogLevel.Debug);
         app.UseCors(SpecificOrigins);
         app
             .UseStaticFiles()
@@ -51,5 +70,21 @@ public class Startup
                     .MapRazorPages()
                     .RequireAuthorization();
             });
+
+        var serviceProvider = app.ApplicationServices;
+        using var scope = serviceProvider.CreateScope();
+        var userService = scope.ServiceProvider.GetService<UserService>();
+        if(userService.FindByUsernameAsync("example@example.com").Result is null)
+        {
+            var admin = new User
+            {
+                Email = "example@example.com",
+                FirstName = "Admin",
+                LastName = "Admin",
+                PasswordHash = "Admin"
+            };
+            var user = userService.CreateUserAsync(admin).Result;
+            Console.WriteLine(user);
+        }
     }
 }

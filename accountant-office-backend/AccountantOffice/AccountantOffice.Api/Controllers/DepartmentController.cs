@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AccountantOffice.Api.Extensions;
 using AccountantOffice.Api.Models;
 using AccountantOffice.Core.Entities;
 using AccountantOffice.UseCases.Interfaces;
@@ -36,7 +37,7 @@ public class DepartmentController : ControllerBase
     /// <param name="itemsOnPage">count of retrieving items</param>
     /// <returns>List of <see cref="Department"/></returns>
     [HttpGet]
-    [Authorize(Policy = "read")]
+    [Authorize(Policy = AuthorizationPolicies.Read)]
     public DepartmentsStructure GetDepartments([FromQuery] int page, [FromQuery] int itemsOnPage)
     {
         var departs = new DepartmentsStructure
@@ -107,6 +108,7 @@ public class DepartmentController : ControllerBase
     [Authorize(Policy = AuthorizationPolicies.Read)]
     public IEnumerable<EmployeeModel> GetEmployees([FromRoute] Guid id, int page, int itemsOnPage)
     {
-        return employeeCases.GetEmployees(id, page, itemsOnPage);
+        var showSalary = User.CanViewSalary();
+        return employeeCases.GetEmployees(id, showSalary, page, itemsOnPage);
     }
 }

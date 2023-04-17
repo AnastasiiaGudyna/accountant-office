@@ -5,7 +5,7 @@ namespace IdentityServer.Api;
 
 public static class Config
 {
-    public static IEnumerable<Client> GetClients(string clientBaseUrl)
+    public static IEnumerable<Client> GetClients(string clientBaseUri)
     {
         return new List<Client>
         {
@@ -13,14 +13,12 @@ public static class Config
             {
                 ClientName = "Accountant Office Web",
                 ClientId = "aow0001",
-
-                // no interactive user, use the clientid/secret for authentication
                 AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
 
                 // secret for authentication
                 ClientSecrets = { new Secret("secret".Sha256()) },
-                RedirectUris = { clientBaseUrl + "/signin-callback" },
-                PostLogoutRedirectUris = { clientBaseUrl },
+                RedirectUris = { clientBaseUri + "/signin-callback" },
+                PostLogoutRedirectUris = { $"{clientBaseUri}/" },
                 // scopes that client has access to
                 AllowedScopes =
                 {
@@ -32,8 +30,10 @@ public static class Config
                     IdentityServerConstants.StandardScopes.OfflineAccess
                 },
                 AllowOfflineAccess = true,
-                IdentityTokenLifetime = 450,
-                AllowedCorsOrigins = new List<string> { clientBaseUrl }
+                AllowedCorsOrigins = new List<string> { clientBaseUri },
+                AccessTokenLifetime = 360,
+                RefreshTokenExpiration = TokenExpiration.Sliding,
+                SlidingRefreshTokenLifetime = 48*3600 //2 days
             }
         };
     }
@@ -43,14 +43,15 @@ public static class Config
         {
             new ("accountant_office", "Accountant Office API")
             {
-                Scopes = { "accountant_office.read", "accountant_office.write, accountant_office.delete", "admin" }
+                Scopes = { "accountant_office.read", "accountant_office.write, accountant_office.delete", "admin" },
+                UserClaims = {"salary_visible", "can_change"}
             }
         };
 
     public static IEnumerable<ApiScope> GetApiScopes() =>
         new List<ApiScope>
         {
-            new (name: "accountant_office.read",   displayName: "Read data of Accountant Office API."),
+            new (name: "accountant_office.read",   displayName: "Read data of Accountant Office API.", userClaims: new List<string>{"department", "employee"}),
             new (name: "accountant_office.write",  displayName: "Write data of Accountant Office API."),
             new (name: "accountant_office.delete", displayName: "Delete data of Accountant Office API."),
             new (name: "admin",                    displayName: "Administration rights.")
