@@ -1,6 +1,6 @@
 <mat-toolbar>
-    <button mat-raised-button color="primary" aria-label="menu icon" (click)="sidenav.toggle()">
-        <mat-icon>menu</mat-icon>
+    <button mat-flat-button class="menu-button" color="primary" aria-label="menu icon" (click)="sidenav.toggle()">
+        <mat-icon class="icon">menu</mat-icon>
     </button>
     <mat-menu #menu="matMenu"></mat-menu>
     <span class="title">Accountant Office</span>
@@ -12,13 +12,19 @@
         <a routerLink="catalogs" class="visible-link" routerLinkActive="active-link">Catalogs</a>
     </div>
     <span class="spacer"></span>
-    <button mat-raised-button color="primary" class="account-box-icon" aria-label="profile">
-        <mat-icon>account_box</mat-icon>
+    <button *ngIf="!user" mat-raised-button color="primary" (click)="onLogin()">
+        Login
     </button>
+    <div *ngIf="user" class="account-menu">
+        <span>{{user.profile.name}}</span>
+        <button mat-flat-button color="primary" class="account-box-icon menu-button" aria-label="profile" [matMenuTriggerFor]="account">
+            <mat-icon class="icon"> account_box </mat-icon>
+        </button>
+    </div>
 </mat-toolbar>
 
-<mat-sidenav-container class="example-container">
-    <mat-sidenav #sidenav mode="side" class="example-sidenav" [fixedInViewport]=true [fixedTopGap]="60">
+<mat-sidenav-container class="menu-container">
+    <mat-sidenav #sidenav mode="side" class="menu-sidenav" [fixedInViewport]=true [fixedTopGap]="60">
         <button mat-menu-item routerLink="departments" class="visible-link" routerLinkActive="active-link">Departments</button>
         <button mat-menu-item routerLink="catalogs" class="visible-link" routerLinkActive="active-link">Catalogs</button>
     </mat-sidenav>
@@ -28,3 +34,12 @@
     </mat-sidenav-content>
 
 </mat-sidenav-container>
+
+<mat-menu #account="matMenu">
+    <button mat-menu-item>
+      <span>User Info</span>
+    </button>
+    <button mat-menu-item (click)="onLogOut()">
+      <span>Log out</span>
+    </button>
+  </mat-menu>

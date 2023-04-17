@@ -80,7 +80,10 @@
               "browserTarget": "accountant-office-front:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "ssl": true
+          }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -110,5 +113,8 @@
       }
     }
   },
-  "defaultProject": "accountant-office-front"
+  "defaultProject": "accountant-office-front",
+  "cli": {
+    "analytics": false
+  }
 }
