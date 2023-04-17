@@ -7,12 +7,14 @@ using AccountantOffice.Data.Repositories;
 using AccountantOffice.UseCases.Cases;
 using AccountantOffice.UseCases.Interfaces;
 using AccountantOffice.UseCases.Mapper;
+using IdentityModel;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.OpenApi.Models;
 
 namespace AccountantOffice.Api;
@@ -27,6 +29,7 @@ public class Startup
     /// </summary>
     public IConfiguration Configuration { get; }
     private const string SpecificOrigins = "specificOrigins";
+    private const string AuthenticationSchemeBearer = "Bearer";
 
     /// <summary>
     /// Startup constructor
@@ -43,6 +46,8 @@ public class Startup
     /// <param name="services"><see cref="IServiceCollection"/></param>
     public void ConfigureServices(IServiceCollection services)
     {
+        IdentityModelEventSource.ShowPII = true;
+        var identityServerUrl = Configuration["IdentityServerUrl"];
         services.AddCors(options =>
         {
             options.AddPolicy(name: SpecificOrigins,
@@ -65,11 +70,24 @@ public class Startup
         services.AddAutoMapper(typeof(MapperProfile));
         services.AddSwaggerGen(c =>
         {
-            c.SwaggerDoc("v1", new OpenApiInfo {Title = "AccountantOffice.Api", Version = "v1"});
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "AccountantOffice.Api", Version = "v1" });
             var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
             c.IncludeXmlComments(xmlPath);
         });
+        services
+            .AddAuthentication(AuthenticationSchemeBearer)
+            .AddJwtBearer(AuthenticationSchemeBearer, options =>
+            {
+                options.Authority = identityServerUrl;
+                options.Audience = "accountant_office";
+                options.TokenValidationParameters.ValidTypes = new[] { JwtClaimTypes.JwtTypes.AccessToken };
+                //for docker 
+                //System.InvalidOperationException: The MetadataAddress or Authority must use HTTPS unless disabled for development by setting RequireHttpsMetadata=false.
+                //when request to identity server is made inside docker it doesn't need to be secure but error still happens 
+                options.RequireHttpsMetadata = false;
+            });
+        services.AddAuthorization(AuthorizationPolicies.ConfigurePolicies);
     }
 
     /// <summary>
@@ -88,7 +106,13 @@ public class Startup
         app.UseSwagger();
         app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AccountantOffice.Api v1"));
         app.UseRouting();
+        app.UseAuthentication();
         app.UseAuthorization();
-        app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints
+                .MapControllers();
+            //.RequireAuthorization();
+        });
     }
 }

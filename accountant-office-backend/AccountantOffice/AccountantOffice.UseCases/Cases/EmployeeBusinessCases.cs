@@ -26,10 +26,10 @@ public class EmployeeBusinessCases : IEmployeeBusinessCases
         return repo.GetList(page, items).ToList();
     }
     
-    public IEnumerable<EmployeeModel> GetEmployees(Guid departmentId, int page, int items)
+    public IEnumerable<EmployeeModel> GetEmployees(Guid departmentId, bool showSalary, int page, int items)
     {
         var employees = repo.GetList(e => e.DepartmentId == departmentId, page, items);
-        return mapper.ProjectTo<EmployeeModel>(employees);
+        return mapper.ProjectTo<EmployeeModel>(employees, new { showSalary });
     }
     public Employee Get(Guid id)
     {

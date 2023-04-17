@@ -4,8 +4,12 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'https://localhost:5001/'
-  //baseUrl: 'http://localhost:5011/'
+  baseUrl: 'https://localhost:6001/',
+  stsAuthority: 'https://localhost:7001/',
+  clientId: 'aow0001',
+  clientRoot: 'https://localhost:4200/',
+  clientScope: 'openid profile offline_access accountant_office.read',
+  clientSecret: "secret"
 };
 
 /*

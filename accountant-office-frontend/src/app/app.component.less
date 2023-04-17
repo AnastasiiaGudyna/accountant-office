@@ -16,7 +16,7 @@ mat-divider {
     background-color: #9786b6;
     width: @title-width;
 }
-.mat-raised-button {
+.menu-button {
     height: 100%;
     border-radius: 0%;
 }
@@ -29,6 +29,12 @@ button.active-link{
     &:hover {
         color: unset;
     }
+}
+button > .mat-icon {
+    display: inline;
+    transform: scale(1.5);
+    margin: 0;
+    vertical-align: middle;
 }
 a {
     visibility: hidden;
@@ -52,9 +58,19 @@ a {
         }
     }
 }
+.account-menu {
+    height: inherit;
+    &>span{
+        padding: 16px;
+        display: inline-block;
+    }
+}
 
+.account-box-icon {
+    float: right;
+}
 
-.example-container {
+.menu-container {
     position: absolute;
     top: 60px;
     bottom: 0;
@@ -62,7 +78,7 @@ a {
     right: 0;
   }
   
-  .example-sidenav {
+  .menu-sidenav {
     display: flex;
     align-items: center;
     justify-content: center;

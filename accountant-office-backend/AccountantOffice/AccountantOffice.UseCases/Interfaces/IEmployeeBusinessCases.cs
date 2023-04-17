@@ -8,7 +8,7 @@ namespace AccountantOffice.UseCases.Interfaces;
 public interface IEmployeeBusinessCases
 {
     IEnumerable<Employee> GetEmployees(int page, int items);
-    IEnumerable<EmployeeModel> GetEmployees(Guid departmentId, int page, int items);
+    IEnumerable<EmployeeModel> GetEmployees(Guid departmentId, bool showSalary, int page, int items);
     Employee Get(Guid id);
     Guid Create(Employee item);
     Guid Update(Employee item);
