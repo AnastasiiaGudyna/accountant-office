@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: accountant-office/accountant-office-backend/
+        working-directory: accountant-office-backend/
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
