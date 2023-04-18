@@ -40,12 +40,12 @@ public class DepartmentController : ControllerBase
     [Authorize(Policy = AuthorizationPolicies.Read)]
     public DepartmentsStructure GetDepartments([FromQuery] int page, [FromQuery] int itemsOnPage)
     {
-        var departs = new DepartmentsStructure
+        var departments = new DepartmentsStructure
         {
             Departments = departmentCases.GetDepartments(page, itemsOnPage),
             DepartmentsCount = departmentCases.GetDepartmentsCount()
         };
-        return departs;
+        return departments;
     }
         
     /// <summary>
@@ -109,6 +109,7 @@ public class DepartmentController : ControllerBase
     public IEnumerable<EmployeeModel> GetEmployees([FromRoute] Guid id, int page, int itemsOnPage)
     {
         var showSalary = User.CanViewSalary();
+        //ToDo: User can be mapped to appropriate model for further interaction inside GetEmployees method
         return employeeCases.GetEmployees(id, showSalary, page, itemsOnPage);
     }
 }
