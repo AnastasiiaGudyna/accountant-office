@@ -10,47 +10,47 @@ namespace AccountantOffice.UseCases.Cases;
 
 public class EmployeeBusinessCases : IEmployeeBusinessCases
 {
-    private readonly IRepository<Employee> repo;
-    private readonly IRepository<Department> depRepo;
+    private readonly IRepository<Employee> employeeRepository;
+    private readonly IRepository<Department> departmentRepository;
     private readonly IMapper mapper;
 
-    public EmployeeBusinessCases(IRepository<Employee> repo, IRepository<Department> depRepo, IMapper mapper)
+    public EmployeeBusinessCases(IRepository<Employee> employeeRepository, IRepository<Department> departmentRepository, IMapper mapper)
     {
-        this.repo = repo;
-        this.depRepo = depRepo;
+        this.employeeRepository = employeeRepository;
+        this.departmentRepository = departmentRepository;
         this.mapper = mapper;
     }
 
     public IEnumerable<Employee> GetEmployees(int page, int items)
     {
-        return repo.GetList(page, items).ToList();
+        return employeeRepository.GetList(page, items).ToList();
     }
     
     public IEnumerable<EmployeeModel> GetEmployees(Guid departmentId, bool showSalary, int page, int items)
     {
-        var employees = repo.GetList(e => e.DepartmentId == departmentId, page, items);
+        var employees = employeeRepository.GetList(e => e.DepartmentId == departmentId, page, items);
         return mapper.ProjectTo<EmployeeModel>(employees, new { showSalary });
     }
     public Employee Get(Guid id)
     {
-        return repo.GetItemById(id);
+        return employeeRepository.GetItemById(id);
     }
 
     public Guid Create(Employee item)
     {
-        var department = depRepo.GetItemById(item.DepartmentId);
+        var department = departmentRepository.GetItemById(item.DepartmentId);
         item.Department = department;
-        return repo.CreateItem(item);
+        return employeeRepository.CreateItem(item);
     }
 
     public Guid Update(Employee item)
     {
-        return repo.UpdateItem(item);
+        return employeeRepository.UpdateItem(item);
     }
 
     public Guid Delete(Guid id)
     {
-        var item = repo.GetItemById(id);
-        return repo.DeleteItem(item);
+        var item = employeeRepository.GetItemById(id);
+        return employeeRepository.DeleteItem(item);
     }
 }

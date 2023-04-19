@@ -21,7 +21,12 @@ public static class AuthorizationPolicies
     /// Name of the "Delete" authorization policy
     /// </summary>
     public const string Delete = "delete";
-    
+
+    /// <summary>
+    /// Custom Claim Type with name scope
+    /// </summary>
+    public const string ScopeClaimType = "scope";
+
     /// <summary>
     /// Configuration of <see cref="AuthorizationOptions"/>
     /// for <see cref="Microsoft.Extensions.DependencyInjection.PolicyServiceCollectionExtensions"/> AddAuthorization middleware
@@ -32,17 +37,17 @@ public static class AuthorizationPolicies
         options.AddPolicy(Read, policy =>
         {
             policy.RequireAuthenticatedUser();
-            policy.RequireClaim("scope", "accountant_office.read", "admin");
+            policy.RequireClaim(ScopeClaimType, "accountant_office.read", "admin");
         });
         options.AddPolicy(Change, policy =>
         {
             policy.RequireAuthenticatedUser();
-            policy.RequireClaim("scope", "accountant_office.write", "admin");
+            policy.RequireClaim(ScopeClaimType, "accountant_office.write", "admin");
         });
         options.AddPolicy(Delete, policy =>
         {
             policy.RequireAuthenticatedUser();
-            policy.RequireClaim("scope", "accountant_office.delete", "admin");
+            policy.RequireClaim(ScopeClaimType, "accountant_office.delete", "admin");
         });
     }
 }
