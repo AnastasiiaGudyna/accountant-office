@@ -64,9 +64,9 @@ public class Startup
         services.AddTransient<IDepartmentBusinessCases, DepartmentBusinessCases>();
         services.AddTransient<IEmployeeBusinessCases, EmployeeBusinessCases>();
         services.AddTransient<CatalogBusinessCases>();
-        services.AddScoped<IRepository<Department>, Repository<Department>>();
-        services.AddScoped<IRepository<Employee>, Repository<Employee>>();
-        services.AddScoped<ICatalogRepository, CatalogRepository>();
+        services.AddTransient<IRepository<Department>, Repository<Department,AccountantContext>>();
+        services.AddTransient<IRepository<Employee>, Repository<Employee,AccountantContext>>();
+        services.AddTransient<ICatalogRepository, CatalogRepository>();
         services.AddAutoMapper(typeof(MapperProfile));
         services.AddSwaggerGen(c =>
         {

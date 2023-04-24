@@ -20,7 +20,7 @@ public class RepositoryUnitTests
     {
         fixture = new Fixture();
         context = Substitute.For<DbContext>();
-        repo = new Repository<TestClass>(context);
+        repo = new Repository<TestClass, DbContext>(context);
     }
     
     [Theory]

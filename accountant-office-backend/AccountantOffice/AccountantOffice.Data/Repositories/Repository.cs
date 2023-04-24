@@ -7,36 +7,37 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AccountantOffice.Data.Repositories;
 
-public class Repository<T> : IRepository<T>
-    where T : Entity
+public class Repository<TEntity, TContext> : IRepository<TEntity>
+    where TEntity : Entity
+    where TContext : DbContext
 {
     private readonly DbContext context;
-    public Repository(DbContext context)
+    public Repository(TContext context)
     {
         this.context = context;
     }
         
-    public IQueryable<T> GetList()
+    public IQueryable<TEntity> GetList()
     {
-        return context.Set<T>();
+        return context.Set<TEntity>();
     }
         
-    public IQueryable<T> GetList(int page, int items)
+    public IQueryable<TEntity> GetList(int page, int items)
     {
-        return context.Set<T>().Skip(page*items).Take(items);
+        return context.Set<TEntity>().Skip(page*items).Take(items);
     }
 
-    public IQueryable<T> GetList(Expression<Func<T, bool>> condition, int page, int items)
+    public IQueryable<TEntity> GetList(Expression<Func<TEntity, bool>> condition, int page, int items)
     {
-        return context.Set<T>().Where(condition).Skip(page*items).Take(items);
+        return context.Set<TEntity>().Where(condition).Skip(page*items).Take(items);
     }
 
-    public T GetItemById(Guid id)
+    public TEntity GetItemById(Guid id)
     {
-        return context.Set<T>().Find(id);
+        return context.Set<TEntity>().Find(id);
     }
 
-    public Guid CreateItem(T item)
+    public Guid CreateItem(TEntity item)
     {
         item.CreateDate = DateTime.UtcNow;
         var entry = context.Add(item);
@@ -44,14 +45,14 @@ public class Repository<T> : IRepository<T>
         return entry.Entity.Id;
     }
 
-    public Guid UpdateItem(T item)
+    public Guid UpdateItem(TEntity item)
     {
         var entry = context.Update(item);
         context.SaveChanges();
         return entry.Entity.Id;
     }
 
-    public Guid DeleteItem(T item)
+    public Guid DeleteItem(TEntity item)
     {
         var entry = context.Remove(item);
         context.SaveChanges();
