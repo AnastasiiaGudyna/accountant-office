@@ -2,16 +2,16 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using AccountantOffice.Core.Entities;
-using AccountantOffice.Data.DBContext;
 using AccountantOffice.UseCases.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace AccountantOffice.Data.Repositories;
 
 public class Repository<T> : IRepository<T>
     where T : Entity
 {
-    private readonly AccountantContext context;
-    public Repository(AccountantContext context)
+    private readonly DbContext context;
+    public Repository(DbContext context)
     {
         this.context = context;
     }

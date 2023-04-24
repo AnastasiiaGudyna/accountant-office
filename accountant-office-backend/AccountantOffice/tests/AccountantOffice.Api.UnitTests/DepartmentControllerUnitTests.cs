@@ -8,12 +8,13 @@ public class DepartmentControllerUnitTests
 {
     private readonly IDepartmentBusinessCases departmentBusinessCases;
     private readonly IEmployeeBusinessCases employeeBusinessCases;
-    private readonly Fixture fixture = new Fixture();
+    private readonly Fixture fixture;
 
     public DepartmentControllerUnitTests()
     {
         departmentBusinessCases = Substitute.For<IDepartmentBusinessCases>();
         employeeBusinessCases = Substitute.For<IEmployeeBusinessCases>();
+        fixture = new Fixture();
     }
 
     [Theory]

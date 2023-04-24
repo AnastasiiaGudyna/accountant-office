@@ -21,9 +21,10 @@ public class EmployeeBusinessCases : IEmployeeBusinessCases
         this.mapper = mapper;
     }
 
-    public IEnumerable<Employee> GetEmployees(int page, int items)
+    public IEnumerable<EmployeeModel> GetEmployees(bool showSalary, int page, int items)
     {
-        return employeeRepository.GetList(page, items).ToList();
+        var employees = employeeRepository.GetList(page, items);
+        return mapper.ProjectTo<EmployeeModel>(employees, new { showSalary });
     }
     
     public IEnumerable<EmployeeModel> GetEmployees(Guid departmentId, bool showSalary, int page, int items)
