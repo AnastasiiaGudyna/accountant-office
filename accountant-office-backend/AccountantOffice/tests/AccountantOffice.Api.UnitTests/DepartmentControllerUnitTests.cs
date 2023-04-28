@@ -1,17 +1,20 @@
 using AccountantOffice.Api.Controllers;
 using AccountantOffice.UseCases.Interfaces;
+using AccountantOffice.UseCases.Models;
 
 namespace AccountantOffice.Api.UnitTests;
 
 public class DepartmentControllerUnitTests
 {
-    private IDepartmentBusinessCases _departmentBusinessCases;
-    private IEmployeeBusinessCases _employeeBusinessCases;
+    private readonly IDepartmentBusinessCases departmentBusinessCases;
+    private readonly IEmployeeBusinessCases employeeBusinessCases;
+    private readonly Fixture fixture;
 
     public DepartmentControllerUnitTests()
     {
-        _departmentBusinessCases = Substitute.For<IDepartmentBusinessCases>();
-        _employeeBusinessCases = Substitute.For<IEmployeeBusinessCases>();
+        departmentBusinessCases = Substitute.For<IDepartmentBusinessCases>();
+        employeeBusinessCases = Substitute.For<IEmployeeBusinessCases>();
+        fixture = new Fixture();
     }
 
     [Theory]
@@ -21,11 +24,23 @@ public class DepartmentControllerUnitTests
     [InlineData(2015)]
     public void GetDepartments_ReturnedCountTheSameAsFromBusinessCase(int expectedDepartmentsCount)
     {
-        _departmentBusinessCases.GetDepartmentsCount().ReturnsForAnyArgs(expectedDepartmentsCount);
-        var sut = new DepartmentController(_departmentBusinessCases, _employeeBusinessCases);
+        departmentBusinessCases.GetDepartmentsCount().ReturnsForAnyArgs(expectedDepartmentsCount);
+        var sut = new DepartmentController(departmentBusinessCases, employeeBusinessCases);
         
         var result = sut.GetDepartments(0, 10);
         
-        Assert.Equal(expectedDepartmentsCount,result.DepartmentsCount);
+        result.DepartmentsCount.Should().Be(expectedDepartmentsCount);
+    }
+    
+    [Fact]
+    public void GetDepartments_ReturnedDepartmentsTheSameAsFromBusinessCase()
+    {
+        var listOfDepartments = fixture.Create<IEnumerable<DepartmentModel>>();
+        departmentBusinessCases.GetDepartments(0, 10).ReturnsForAnyArgs(listOfDepartments);
+        var sut = new DepartmentController(departmentBusinessCases, employeeBusinessCases);
+        
+        var result = sut.GetDepartments(0, 10);
+
+        result.Departments.Should().BeEquivalentTo(listOfDepartments);
     }
 }

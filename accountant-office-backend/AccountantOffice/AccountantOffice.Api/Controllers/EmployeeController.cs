@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using AccountantOffice.Core.Entities;
 using AccountantOffice.UseCases.Interfaces;
+using AccountantOffice.UseCases.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccountantOffice.Api.Controllers;
@@ -30,9 +31,9 @@ public class EmployeeController : ControllerBase
     /// <param name="itemsOnPage">count of retrieving items</param>
     /// <returns>List of <see cref="Employee"/></returns>
     [HttpGet]
-    public IEnumerable<Employee> GetEmployees([FromQuery] int page, [FromQuery] int itemsOnPage)
+    public IEnumerable<EmployeeModel> GetEmployees([FromQuery] int page, [FromQuery] int itemsOnPage)
     {   
-        return employeeCases.GetEmployees(page, itemsOnPage);
+        return employeeCases.GetEmployees(true, page, itemsOnPage);
     }
         
     /// <summary>
